@@ -1,10 +1,12 @@
-package org.test.myapplication;
+package org.test.myapplication.view.activity;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import org.test.myapplication.R;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 

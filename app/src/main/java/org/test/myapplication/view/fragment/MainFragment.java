@@ -1,4 +1,4 @@
-package org.test.myapplication;
+package org.test.myapplication.view.fragment;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.test.myapplication.view.adapter.MainAdapter;
+import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentMainBinding;
+import org.test.myapplication.viewmodel.ContactViewModel;
 
 public class MainFragment extends Fragment {
 

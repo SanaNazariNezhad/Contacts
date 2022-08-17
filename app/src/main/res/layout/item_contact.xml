@@ -5,6 +5,15 @@
 
     <data>
 
+        <variable
+            name="contactViewModel"
+            type="org.test.myapplication.viewmodel.ContactViewModel" />
+
+        <variable
+            name="contact"
+            type="String" />
+
+
     </data>
 
     <RelativeLayout
@@ -12,7 +21,8 @@
         android:background="@color/white"
         android:padding="16dp"
         android:layout_margin="8dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> contactViewModel.onClickContactListItems(contact)}">
 
 
         <ImageView

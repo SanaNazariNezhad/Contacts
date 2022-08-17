@@ -1,11 +1,12 @@
-package org.test.myapplication;
+package org.test.myapplication.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.ViewModel;
+
+import org.test.myapplication.view.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +37,9 @@ public class ContactViewModel extends AndroidViewModel {
 
     public List<String> getContactList() {
         return mContactsList;
+    }
+
+    public void onClickContactListItems(String contact) {
+            mContext.startActivity(DetailActivity.newIntent(mContext,contact));
     }
 }

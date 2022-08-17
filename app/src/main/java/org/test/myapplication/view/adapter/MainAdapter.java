@@ -1,4 +1,4 @@
-package org.test.myapplication;
+package org.test.myapplication.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
+import org.test.myapplication.R;
 import org.test.myapplication.databinding.ItemContactBinding;
+import org.test.myapplication.viewmodel.ContactViewModel;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     private final LifecycleOwner mOwner;
@@ -58,10 +60,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             super(itemContactBinding.getRoot());
             mItemContactBinding = itemContactBinding;
             mItemContactBinding.setLifecycleOwner(mOwner);
+            mItemContactBinding.setContactViewModel(mContactViewModel);
 
         }
 
         public void bindContact(String contact) {
+            mItemContactBinding.setContact(contact);
             mItemContactBinding.contactName.setText(contact);
             // on below line we are setting data to our text view.
             mItemContactBinding.contactName.setText(contact);
