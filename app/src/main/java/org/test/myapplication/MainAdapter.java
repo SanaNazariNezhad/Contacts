@@ -9,6 +9,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 import org.test.myapplication.databinding.ItemContactBinding;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
@@ -59,7 +62,24 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
         }
 
         public void bindContact(String contact) {
-            mItemContactBinding.textContact.setText(contact);
+            mItemContactBinding.contactName.setText(contact);
+            // on below line we are setting data to our text view.
+            mItemContactBinding.contactName.setText(contact);
+            ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+            // generate random color
+            int color = generator.getRandomColor();
+
+            // below text drawable is a circular.
+            TextDrawable drawable2 = TextDrawable.builder().beginConfig()
+                    .width(100)  // width in px
+                    .height(100) // height in px
+                    .endConfig()
+                    // as we are building a circular drawable
+                    // we are calling a build round method.
+                    // in that method we are passing our text and color.
+                    .buildRound(contact.substring(0, 1), color);
+            // setting image to our image view on below line.
+            mItemContactBinding.contactImage.setImageDrawable(drawable2);
         }
     }
 }
