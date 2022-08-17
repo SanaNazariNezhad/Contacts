@@ -20,6 +20,7 @@ import java.util.List;
 public class ContactViewModel extends AndroidViewModel {
     private List<String> mContactsList = new ArrayList<>();
     private Context mContext;
+    private String mContact;
 
     public ContactViewModel(@NonNull Application application) {
         super(application);
@@ -44,7 +45,12 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     public void onClickContactListItems(String contact) {
-            mContext.startActivity(DetailActivity.newIntent(mContext,contact));
+        mContact = contact;
+        mContext.startActivity(DetailActivity.newIntent(mContext,contact));
+    }
+
+    public String getContact() {
+        return mContact;
     }
 
     public void sendMessage(String contactNumber) {

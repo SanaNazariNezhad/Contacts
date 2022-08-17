@@ -19,7 +19,6 @@ import org.test.myapplication.viewmodel.ContactViewModel;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     private final LifecycleOwner mOwner;
     private final ContactViewModel mContactViewModel;
-
     public MainAdapter(LifecycleOwner owner, Context context, ContactViewModel contactViewModel) {
         mOwner = owner;
         mContactViewModel = contactViewModel;
@@ -85,5 +84,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             // setting image to our image view on below line.
             mItemContactBinding.contactImage.setImageDrawable(drawable2);
         }
+
     }
 }

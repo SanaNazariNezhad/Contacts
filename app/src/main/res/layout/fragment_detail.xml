@@ -64,10 +64,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:onClick="@{() -> contactViewModel.makeCall(number)}"
                     android:padding="4dp"
                     android:src="@drawable/ic_call"
-                    app:tint="@color/purple_700"
-                    android:onClick="@{() -> contactViewModel.makeCall(number)}"/>
+                    app:tint="@color/purple_700" />
 
                 <!--text view for displaying user contact-->
                 <TextView
