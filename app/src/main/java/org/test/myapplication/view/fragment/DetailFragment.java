@@ -2,8 +2,10 @@ package org.test.myapplication.view.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentDetailBinding;
+import org.test.myapplication.viewmodel.ContactViewModel;
 
 public class DetailFragment extends Fragment {
 
@@ -18,6 +21,7 @@ public class DetailFragment extends Fragment {
 
     private String mContact;
     private FragmentDetailBinding mDetailBinding;
+    private ContactViewModel mViewModel;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -48,11 +52,20 @@ public class DetailFragment extends Fragment {
                 container,
                 false);
 
-        initView();
         return mDetailBinding.getRoot();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        initView();
+    }
+
     private void initView() {
+        mViewModel.setContext(getActivity());
+        mDetailBinding.setContactViewModel(mViewModel);
         mDetailBinding.idTVName.setText(mContact);
+        mDetailBinding.setNumber("09187287311");
     }
 }
