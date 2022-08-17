@@ -1,37 +1,64 @@
 package org.test.myapplication;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.test.myapplication.databinding.FragmentMainBinding;
 
 public class MainFragment extends Fragment {
 
-    public MainFragment() {
-        // Required empty public constructor
-    }
+    private ContactViewModel mViewModel;
+    private FragmentMainBinding mBinding;
+    private MainAdapter mMainAdapter;
 
     public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new MainFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_main,
+                container,
+                false);
+
+        initView();
+        return mBinding.getRoot();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        // TODO: Use the ViewModel
+        setAdapter();
     }
+
+    private void setAdapter() {
+        mMainAdapter = new MainAdapter(this,getActivity(),mViewModel);
+        mBinding.recyclerMainFragment.setAdapter(mMainAdapter);
+    }
+
+    private void initView() {
+        mBinding.recyclerMainFragment.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
 }
