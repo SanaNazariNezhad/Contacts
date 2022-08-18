@@ -65,6 +65,18 @@ public class MainFragment extends Fragment {
         FAB_listener();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setAdapter();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        setAdapter();
+    }
+
     private void initView() {
         mBinding.recyclerMainFragment.setLayoutManager(new LinearLayoutManager(getContext()));
     }

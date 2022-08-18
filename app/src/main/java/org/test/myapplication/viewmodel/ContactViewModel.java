@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.AndroidViewModel;
 
 import org.test.myapplication.model.ContactModel;
+import org.test.myapplication.model.repository.ContactDBRepository;
 import org.test.myapplication.view.activity.CreateNewContactActivity;
 import org.test.myapplication.view.activity.DetailActivity;
 import org.test.myapplication.view.fragment.CreateNewContactFragment;
@@ -21,23 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactViewModel extends AndroidViewModel {
-    private List<ContactModel> mContactsList = new ArrayList<>();
     private Context mContext;
-    private ContactModel mContact;
+    private ContactDBRepository mRepository;
 
     public ContactViewModel(@NonNull Application application) {
         super(application);
 
-        mContactsList.add(new ContactModel("Sana","",""));
-        mContactsList.add(new ContactModel("Zahra","",""));
-        mContactsList.add(new ContactModel("Yegane","",""));
-        mContactsList.add(new ContactModel("Mehmet","",""));
-        mContactsList.add(new ContactModel("Baris","",""));
-        mContactsList.add(new ContactModel("Fereshte","",""));
-        mContactsList.add(new ContactModel("Soraya","",""));
-        mContactsList.add(new ContactModel("Poyraz","",""));
-        mContactsList.add(new ContactModel("Aysa","",""));
-        mContactsList.add(new ContactModel("John","",""));
+        mRepository = ContactDBRepository.getInstance(application);
     }
 
     public void setContext(Context context) {
@@ -45,11 +36,14 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     public List<ContactModel> getContactList() {
-        return mContactsList;
+        return mRepository.getContacts();
+    }
+
+    public void insertContact(ContactModel contact) {
+        mRepository.insertContact(contact);
     }
 
     public void onClickContactListItems(ContactModel contact) {
-        mContact = contact;
         mContext.startActivity(DetailActivity.newIntent(mContext,contact));
     }
 
@@ -57,8 +51,8 @@ public class ContactViewModel extends AndroidViewModel {
         mContext.startActivity(CreateNewContactActivity.newIntent(mContext));
     }
 
-    public ContactModel getContact() {
-        return mContact;
+    public ContactModel getContact(long id) {
+        return mRepository.getContact(id);
     }
 
     public void sendMessage(String contactNumber) {
