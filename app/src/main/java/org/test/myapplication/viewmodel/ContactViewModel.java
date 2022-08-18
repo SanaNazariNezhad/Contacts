@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.AndroidViewModel;
 
+import org.test.myapplication.view.activity.CreateNewContactActivity;
 import org.test.myapplication.view.activity.DetailActivity;
+import org.test.myapplication.view.fragment.CreateNewContactFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,10 @@ public class ContactViewModel extends AndroidViewModel {
     public void onClickContactListItems(String contact) {
         mContact = contact;
         mContext.startActivity(DetailActivity.newIntent(mContext,contact));
+    }
+
+    public void onClickCreateNewContact() {
+        mContext.startActivity(CreateNewContactActivity.newIntent(mContext));
     }
 
     public String getContact() {

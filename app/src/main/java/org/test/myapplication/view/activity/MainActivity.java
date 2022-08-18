@@ -42,10 +42,10 @@ public class MainActivity extends SingleFragmentActivity {
         Dexter.withActivity(this)
                 // below line is use to request the number of
                 // permissions which are required in our app.
-                .withPermissions(Manifest.permission.READ_CONTACTS,
+                .withPermissions(
                         // below is the list of permissions
                         Manifest.permission.CALL_PHONE,
-                        Manifest.permission.SEND_SMS, Manifest.permission.WRITE_CONTACTS)
+                        Manifest.permission.SEND_SMS)
                 // after adding permissions we are
                 // calling and with listener method.
                 .withListener(new MultiplePermissionsListener() {

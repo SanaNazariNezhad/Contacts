@@ -25,13 +25,14 @@ import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentMainBinding;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
+import java.util.Objects;
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainFragment extends Fragment {
 
     private ContactViewModel mViewModel;
     private FragmentMainBinding mBinding;
-    private MainAdapter mMainAdapter;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -61,6 +62,16 @@ public class MainFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         setAdapter();
         swipeRecycler();
+        FAB_listener();
+    }
+
+    private void initView() {
+        mBinding.recyclerMainFragment.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void setAdapter() {
+        MainAdapter mainAdapter = new MainAdapter(this, getActivity(), mViewModel);
+        mBinding.recyclerMainFragment.setAdapter(mainAdapter);
     }
 
     private void swipeRecycler() {
@@ -86,11 +97,12 @@ public class MainFragment extends Fragment {
             }
 
             @Override
-            public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
+            public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                     float dX, float dY, int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(getActivity(), R.color.teal_700))
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.teal_700))
                         .addSwipeLeftActionIcon(R.drawable.ic_sms)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(getActivity(), R.color.purple_200))
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_200))
                         .addSwipeRightActionIcon(R.drawable.ic_call)
                         .addSwipeRightLabel(getString(R.string.call))
                         .setSwipeRightLabelColor(Color.WHITE)
@@ -107,13 +119,9 @@ public class MainFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(mBinding.recyclerMainFragment);
     }
 
-    private void setAdapter() {
-        mMainAdapter = new MainAdapter(this,getActivity(),mViewModel);
-        mBinding.recyclerMainFragment.setAdapter(mMainAdapter);
-    }
-
-    private void initView() {
-        mBinding.recyclerMainFragment.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void FAB_listener() {
+        mViewModel.setContext(getActivity());
+        mBinding.setContactViewModel(mViewModel);
     }
 
 }
