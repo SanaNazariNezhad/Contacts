@@ -84,7 +84,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                String contact = mViewModel.getContactList().get(position);
+                String contact = mViewModel.getContactList().get(position).getContactName();
                 if (direction == ItemTouchHelper.RIGHT){
                     mViewModel.makeCall("0918");
                     Toast.makeText(getActivity(), "Call: " + contact, Toast.LENGTH_SHORT).show();

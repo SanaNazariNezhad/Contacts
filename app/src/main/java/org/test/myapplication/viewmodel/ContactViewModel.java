@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.AndroidViewModel;
 
+import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.view.activity.CreateNewContactActivity;
 import org.test.myapplication.view.activity.DetailActivity;
 import org.test.myapplication.view.fragment.CreateNewContactFragment;
@@ -20,33 +21,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactViewModel extends AndroidViewModel {
-    private List<String> mContactsList = new ArrayList<>();
+    private List<ContactModel> mContactsList = new ArrayList<>();
     private Context mContext;
-    private String mContact;
+    private ContactModel mContact;
 
     public ContactViewModel(@NonNull Application application) {
         super(application);
-        mContactsList.add("Sana");
-        mContactsList.add("Zahra");
-        mContactsList.add("Yegane");
-        mContactsList.add("Mehmet");
-        mContactsList.add("Baris");
-        mContactsList.add("Fereshte");
-        mContactsList.add("Soraya");
-        mContactsList.add("Poyraz");
-        mContactsList.add("Aysa");
-        mContactsList.add("John");
+
+        mContactsList.add(new ContactModel("Sana","",""));
+        mContactsList.add(new ContactModel("Zahra","",""));
+        mContactsList.add(new ContactModel("Yegane","",""));
+        mContactsList.add(new ContactModel("Mehmet","",""));
+        mContactsList.add(new ContactModel("Baris","",""));
+        mContactsList.add(new ContactModel("Fereshte","",""));
+        mContactsList.add(new ContactModel("Soraya","",""));
+        mContactsList.add(new ContactModel("Poyraz","",""));
+        mContactsList.add(new ContactModel("Aysa","",""));
+        mContactsList.add(new ContactModel("John","",""));
     }
 
     public void setContext(Context context) {
         mContext = context;
     }
 
-    public List<String> getContactList() {
+    public List<ContactModel> getContactList() {
         return mContactsList;
     }
 
-    public void onClickContactListItems(String contact) {
+    public void onClickContactListItems(ContactModel contact) {
         mContact = contact;
         mContext.startActivity(DetailActivity.newIntent(mContext,contact));
     }
@@ -55,7 +57,7 @@ public class ContactViewModel extends AndroidViewModel {
         mContext.startActivity(CreateNewContactActivity.newIntent(mContext));
     }
 
-    public String getContact() {
+    public ContactModel getContact() {
         return mContact;
     }
 

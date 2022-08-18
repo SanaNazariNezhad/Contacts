@@ -14,6 +14,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.ItemContactBinding;
+import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
@@ -43,8 +44,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     @Override
     public void onBindViewHolder(@NonNull MainAdapter.MainHolder holder, int position) {
 
-        String contacts = mContactViewModel.getContactList().get(position);
-        holder.bindContact(contacts);
+        ContactModel contact = mContactViewModel.getContactList().get(position);
+        holder.bindContact(contact);
     }
 
     @Override
@@ -63,11 +64,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
 
         }
 
-        public void bindContact(String contact) {
+        public void bindContact(ContactModel contact) {
             mItemContactBinding.setContact(contact);
-            mItemContactBinding.contactName.setText(contact);
+            mItemContactBinding.contactName.setText(contact.getContactName());
             // on below line we are setting data to our text view.
-            mItemContactBinding.contactName.setText(contact);
             ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
             // generate random color
             int color = generator.getRandomColor();
@@ -80,7 +80,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
                     // as we are building a circular drawable
                     // we are calling a build round method.
                     // in that method we are passing our text and color.
-                    .buildRound(contact.substring(0, 1), color);
+                    .buildRound(contact.getContactName().substring(0, 1), color);
             // setting image to our image view on below line.
             mItemContactBinding.contactImage.setImageDrawable(drawable2);
         }
