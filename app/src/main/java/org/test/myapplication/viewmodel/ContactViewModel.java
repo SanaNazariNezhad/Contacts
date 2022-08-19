@@ -55,20 +55,29 @@ public class ContactViewModel extends AndroidViewModel {
         return mRepository.getContact(id);
     }
 
-    public void sendMessage(String contactNumber) {
+    public void sendMessage(ContactModel contact) {
         // in this method we are calling an intent to send sms.
         // on below line we are passing our contact number.
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + contactNumber));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + contact.getContactNumber()));
         intent.putExtra("sms_body", "Enter your message");
         mContext.startActivity(intent);
     }
 
-    public void makeCall(String contactNumber) {
+    public void sendEmail(ContactModel contact) {
+        // in this method we are calling an intent to send email.
+        // on below line we are passing our contact email.
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:" + contact.getContactEmail()));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, contact.getContactEmail());
+        mContext.startActivity(Intent.createChooser(emailIntent,"Choose an Email client :"));
+    }
+
+    public void makeCall(ContactModel contact) {
         // this method is called for making a call.
         // on below line we are calling an intent to make a call.
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         // on below line we are setting data to it.
-        callIntent.setData(Uri.parse("tel:" + contactNumber));
+        callIntent.setData(Uri.parse("tel:" + contact.getContactNumber()));
         // on below line we are checking if the calling permissions are granted not.
         if (ActivityCompat.checkSelfPermission(mContext,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {

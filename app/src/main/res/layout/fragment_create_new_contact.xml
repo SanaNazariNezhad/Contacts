@@ -38,12 +38,11 @@
             android:id="@+id/btn_save"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
             app:layout_constraintTop_toBottomOf="@id/gl_horizontal_bottom"
-            android:text="@string/save"
-            android:textColor="@color/black"/>
+            android:text="@string/save" />
 
         <Button
             android:id="@+id/btn_cancel"
@@ -51,9 +50,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_save"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
             app:layout_constraintTop_toBottomOf="@id/gl_horizontal_bottom"
-            android:background="@color/transparent"
-            android:textColor="@color/black"
             android:text="@string/cancel" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +63,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="10dp"
                 app:cardMaxElevation="10dp"
@@ -137,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:layout_marginTop="16dp"
-                        android:hint="@string/phone_number"
+                        android:hint="@string/Mobile"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         app:layout_constraintBottom_toBottomOf="@+id/image_view_call"
                         app:layout_constraintTop_toTopOf="@id/image_view_call"

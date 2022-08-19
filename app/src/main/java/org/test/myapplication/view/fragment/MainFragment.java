@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.view.adapter.MainAdapter;
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentMainBinding;
@@ -96,12 +97,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                String contact = mViewModel.getContactList().get(position).getContactName();
+                ContactModel contact = mViewModel.getContactList().get(position);
                 if (direction == ItemTouchHelper.RIGHT){
-                    mViewModel.makeCall("0918");
+                    mViewModel.makeCall(contact);
                     Toast.makeText(getActivity(), "Call: " + contact, Toast.LENGTH_SHORT).show();
                 }else {
-                    mViewModel.sendMessage("09199181673");
+                    mViewModel.sendMessage(contact);
                     Toast.makeText(getActivity(), "Message: " + contact, Toast.LENGTH_SHORT).show();
                 }
                 setAdapter();
@@ -112,9 +113,9 @@ public class MainFragment extends Fragment {
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                      float dX, float dY, int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.teal_700))
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.blue1))
                         .addSwipeLeftActionIcon(R.drawable.ic_sms)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.purple_200))
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.light_green))
                         .addSwipeRightActionIcon(R.drawable.ic_call)
                         .addSwipeRightLabel(getString(R.string.call))
                         .setSwipeRightLabelColor(Color.WHITE)

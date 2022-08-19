@@ -9,8 +9,8 @@
             type="org.test.myapplication.viewmodel.ContactViewModel" />
 
         <variable
-            name="number"
-            type="String" />
+            name="contact"
+            type="org.test.myapplication.model.ContactModel" />
     </data>
 
     <RelativeLayout
@@ -26,7 +26,7 @@
             android:id="@+id/idIVContact"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/purple_200"
+            android:background="@color/green"
             android:paddingTop="50dp"
             android:src="@drawable/ic_person"
             app:tint="@color/white" />
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:layout_below="@id/idIVContact"
-            android:background="@color/purple_200"
+            android:background="@color/green"
             android:gravity="center|top"
             android:padding="8dp"
             android:textColor="@color/white"
@@ -57,7 +57,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> contactViewModel.makeCall(contact)}">
 
                 <!--image view for making a call -->
 
@@ -71,22 +72,23 @@
                     android:layout_marginBottom="8dp"
                     app:layout_constraintEnd_toStartOf="@id/idIVMessage"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:onClick="@{() -> contactViewModel.makeCall(number)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> contactViewModel.makeCall(contact)}"
                     android:padding="4dp"
                     android:src="@drawable/ic_call"
-                    app:tint="@color/purple_700" />
+                    app:tint="@color/yellow" />
 
                 <TextView
                     android:id="@+id/idTVPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/idTVPhoneNumber"
-                    android:layout_marginStart="3dp"
-                    android:layout_toStartOf="@id/idIVCall"
-                    android:text="@string/phone" />
+                    android:layout_marginStart="12dp"
+                    android:paddingTop="12dp"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:text="@string/Mobile" />
 
                 <TextView
                     android:id="@+id/idTVPhoneNumber"
@@ -95,9 +97,11 @@
                     android:layout_below="@id/idTVPhone"
                     app:layout_constraintRight_toLeftOf="@id/idIVCall"
                     app:layout_constraintTop_toBottomOf="@id/idTVPhone"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingBottom="12dp"
                     android:layout_toStartOf="@id/idIVCall"
                     android:text="@string/phone" />
 
@@ -112,10 +116,75 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:onClick="@{() -> contactViewModel.sendMessage(number)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> contactViewModel.sendMessage(contact)}"
                     android:padding="4dp"
                     android:src="@drawable/ic_sms"
-                    app:tint="@color/purple_700" />
+                    app:tint="@color/yellow" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/idTVName"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="4dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> contactViewModel.sendEmail(contact)}">
+
+
+                <TextView
+                    android:id="@+id/idTVEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/idTVEmail_address"
+                    android:layout_marginStart="12dp"
+                    android:paddingTop="12dp"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/idTVEmail_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/idTVEmail"
+                    app:layout_constraintRight_toLeftOf="@id/idIVEmail"
+                    app:layout_constraintTop_toBottomOf="@id/idTVEmail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingBottom="12dp"
+                    android:layout_toStartOf="@id/idIVEmail"
+                    android:text="@string/email_address" />
+
+                <!--image view for displaying message icon-->
+                <ImageView
+                    android:id="@+id/idIVEmail"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> contactViewModel.sendEmail(contact)}"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_email"
+                    app:tint="@color/yellow" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -70,6 +70,7 @@ public class DetailFragment extends Fragment {
         mDetailBinding.setContactViewModel(mViewModel);
         mDetailBinding.idTVName.setText(mContact.getContactName());
         mDetailBinding.idTVPhoneNumber.setText(mContact.getContactNumber());
-        mDetailBinding.setNumber(mContact.getContactNumber());
+        mDetailBinding.idTVEmailAddress.setText(mContact.getContactEmail());
+        mDetailBinding.setContact(mContact);
     }
 }
