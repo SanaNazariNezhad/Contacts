@@ -19,26 +19,30 @@
         tools:context=".view.activity.DetailActivity">
 
         <!--image view for contact-->
+
+        <!--text view for displaying user name-->
+
         <ImageView
             android:id="@+id/idIVContact"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:background="@color/purple_200"
-            android:padding="50dp"
-            android:src="@mipmap/ic_launcher"
+            android:paddingTop="50dp"
+            android:src="@drawable/ic_person"
             app:tint="@color/white" />
 
-        <!--text view for displaying user name-->
         <TextView
             android:id="@+id/idTVName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_below="@id/idIVContact"
             android:background="@color/purple_200"
+            android:gravity="center|top"
             android:padding="8dp"
-            android:text="Name"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="Name" />
 
         <!--cardview for displaying user contact-->
         <androidx.cardview.widget.CardView
@@ -51,53 +55,69 @@
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <!--image view for making a call -->
+
+                <!--text view for displaying user contact-->
                 <ImageView
                     android:id="@+id/idIVCall"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    app:layout_constraintEnd_toStartOf="@id/idIVMessage"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:onClick="@{() -> contactViewModel.makeCall(number)}"
                     android:padding="4dp"
                     android:src="@drawable/ic_call"
                     app:tint="@color/purple_700" />
 
-                <!--text view for displaying user contact-->
                 <TextView
                     android:id="@+id/idTVPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/idTVPhoneNumber"
+                    android:layout_marginStart="3dp"
+                    android:layout_toStartOf="@id/idIVCall"
+                    android:text="@string/phone" />
+
+                <TextView
+                    android:id="@+id/idTVPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_below="@id/idTVPhone"
+                    app:layout_constraintRight_toLeftOf="@id/idIVCall"
+                    app:layout_constraintTop_toBottomOf="@id/idTVPhone"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginStart="3dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_toStartOf="@id/idIVMessage"
-                    android:layout_toEndOf="@id/idIVCall"
-                    android:layout_toRightOf="@id/idIVCall"
-                    android:text="Phone" />
+                    android:layout_marginTop="12dp"
+                    android:layout_toStartOf="@id/idIVCall"
+                    android:text="@string/phone" />
 
                 <!--image view for displaying message icon-->
                 <ImageView
                     android:id="@+id/idIVMessage"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:onClick="@{() -> contactViewModel.sendMessage(number)}"
                     android:padding="4dp"
                     android:src="@drawable/ic_sms"
                     app:tint="@color/purple_700" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 

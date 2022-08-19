@@ -13,24 +13,26 @@ import android.view.ViewGroup;
 
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentDetailBinding;
+import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
 public class DetailFragment extends Fragment {
 
     private static final String ARG_Contact = "contact_detail";
 
-    private String mContact;
+    private ContactModel mContact;
     private FragmentDetailBinding mDetailBinding;
     private ContactViewModel mViewModel;
+    private Long mId;
 
     public DetailFragment() {
         // Required empty public constructor
     }
 
-    public static DetailFragment newInstance(String contact) {
+    public static DetailFragment newInstance(long contact) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_Contact, contact);
+        args.putLong(ARG_Contact, contact);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,7 +41,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mContact = getArguments().getString(ARG_Contact);
+            mId = getArguments().getLong(ARG_Contact);
         }
     }
 
@@ -63,9 +65,11 @@ public class DetailFragment extends Fragment {
     }
 
     private void initView() {
+        mContact = mViewModel.getContact((mId));
         mViewModel.setContext(getActivity());
         mDetailBinding.setContactViewModel(mViewModel);
-        mDetailBinding.idTVName.setText(mContact);
-        mDetailBinding.setNumber("09187287311");
+        mDetailBinding.idTVName.setText(mContact.getContactName());
+        mDetailBinding.idTVPhoneNumber.setText(mContact.getContactNumber());
+        mDetailBinding.setNumber(mContact.getContactNumber());
     }
 }

@@ -67,6 +67,7 @@ public class CreateNewContactFragment extends Fragment {
                 && mBinding.contactNumber.getText().toString().trim().length() == 0){
 
                     Toast.makeText(getActivity(), "Nothing to save. Contact discarded.", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
 
                 } else{
                     ContactModel contact = new ContactModel(mBinding.contactName.getText().toString(),
