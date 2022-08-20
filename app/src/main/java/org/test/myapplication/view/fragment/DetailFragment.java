@@ -1,15 +1,24 @@
 package org.test.myapplication.view.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentDetailBinding;
@@ -19,6 +28,10 @@ import org.test.myapplication.viewmodel.ContactViewModel;
 public class DetailFragment extends Fragment {
 
     private static final String ARG_Contact = "contact_detail";
+    public static final String FRAGMENT_TAG_EDIT = "Edit";
+    public static final int REQUEST_CODE_EDIT = 0;
+    public static final String FRAGMENT_TAG_DELETE = "Delete";
+    public static final int REQUEST_CODE_DELETE = 1;
 
     private ContactModel mContact;
     private FragmentDetailBinding mDetailBinding;
@@ -62,6 +75,19 @@ public class DetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
         initView();
+        listener();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null)
+            return;
+
+        if (requestCode == REQUEST_CODE_EDIT) {
+            initView();
+        }else if (requestCode == REQUEST_CODE_DELETE){
+            getActivity().finish();
+        }
     }
 
     private void initView() {
@@ -72,5 +98,67 @@ public class DetailFragment extends Fragment {
         mDetailBinding.idTVPhoneNumber.setText(mContact.getContactNumber());
         mDetailBinding.idTVEmailAddress.setText(mContact.getContactEmail());
         mDetailBinding.setContact(mContact);
+    }
+
+    private void listener(){
+        mDetailBinding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.share_menu:
+                        shareContactIntent();
+                        break;
+                    case R.id.edit_menu:
+                        EditFragment editFragment = EditFragment.newInstance(mContact.getPrimaryId());
+
+                        editFragment.setTargetFragment(
+                                DetailFragment.this,
+                                REQUEST_CODE_EDIT);
+
+                        editFragment.show(
+                                getActivity().getSupportFragmentManager(),
+                                FRAGMENT_TAG_EDIT);
+                        break;
+                    case R.id.delete_menu:
+                        DeleteFragment deleteFragment = DeleteFragment.newInstance(mContact.getPrimaryId());
+
+                        deleteFragment.setTargetFragment(
+                                DetailFragment.this,
+                                REQUEST_CODE_DELETE);
+
+                        deleteFragment.show(
+                                getActivity().getSupportFragmentManager(),
+                                FRAGMENT_TAG_DELETE);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void shareContactIntent() {
+
+        ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity());
+        Intent intent = intentBuilder
+                .setType("text/plain")
+                .setText(shareWord(mContact.getContactName(),mContact.getContactNumber(),
+                        mContact.getContactEmail()))
+                .setChooserTitle(getString(R.string.contact_sharing_massage))
+                .createChooserIntent();
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    public String shareWord(String name, String number, String email) {
+
+        String shareMassage = getString(
+                R.string.share_contact,
+                name,
+                number,
+                email);
+
+        return shareMassage;
     }
 }

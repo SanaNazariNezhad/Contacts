@@ -39,8 +39,20 @@ public class ContactViewModel extends AndroidViewModel {
         return mRepository.getContacts();
     }
 
+    public ContactModel getContact(long id) {
+        return mRepository.getContact(id);
+    }
+
     public void insertContact(ContactModel contact) {
         mRepository.insertContact(contact);
+    }
+
+    public void deleteContact(ContactModel contact) {
+        mRepository.deleteContact(contact);
+    }
+
+    public void updateContact(ContactModel contact) {
+        mRepository.updateContact(contact);
     }
 
     public void onClickContactListItems(ContactModel contact) {
@@ -49,10 +61,6 @@ public class ContactViewModel extends AndroidViewModel {
 
     public void onClickCreateNewContact() {
         mContext.startActivity(CreateNewContactActivity.newIntent(mContext));
-    }
-
-    public ContactModel getContact(long id) {
-        return mRepository.getContact(id);
     }
 
     public void sendMessage(ContactModel contact) {
