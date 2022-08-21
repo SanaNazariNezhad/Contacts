@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.BottomSheetShareBinding;
 import org.test.myapplication.model.ContactModel;
@@ -25,6 +22,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     private ContactViewModel mViewModel;
     private ContactModel mContact;
     private BottomSheetShareBinding mShareBinding;
+    public static final String AUTHORITY = "org.test.myapplication.fileProvider";
 
     public static BottomSheetDialog newInstance(long contactId) {
         BottomSheetDialog fragment = new BottomSheetDialog();
@@ -32,6 +30,17 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         args.putLong(CONTACT_ID,contactId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable
+            ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        mShareBinding = DataBindingUtil.inflate(inflater,
+                R.layout.bottom_sheet_share,
+                container,
+                false);
+        return mShareBinding.getRoot();
     }
 
     @Override
@@ -53,10 +62,15 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(getActivity(),
-                                "Algorithm Shared", Toast.LENGTH_SHORT)
-                        .show();
-                dismiss();
+
+                //TODO share vcf file
+                    //exportVCF();
+
+                    Toast.makeText(getActivity(),
+                                    "File Share has error!", Toast.LENGTH_SHORT)
+                            .show();
+
+
             }
         });
 
@@ -70,17 +84,53 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable
-            ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
-        mShareBinding = DataBindingUtil.inflate(inflater,
-                R.layout.bottom_sheet_share,
-                container,
-                false);
+    //TODO share vcf file
 
-        return mShareBinding.getRoot();
+    /*private void exportVCF() throws IOException {
+        VCard vCard = new VCard();
+
+        vCard.setFormattedName(mContact.getContactName());
+        Email email = new Email(mContact.getContactEmail());
+        vCard.addEmail(email);
+        Telephone telephone = new Telephone(mContact.getContactNumber());
+        vCard.addTelephoneNumber(telephone);
+        File file = new File(requireActivity().getFilesDir(),"vcard.vcf");
+        Ezvcard.write(vCard).go(file);
+        Uri vcfUri = generateUriForFile(file);
+        sendVcfFile(file,vcfUri);
     }
+
+    private Uri generateUriForFile(File file) {
+        return FileProvider.getUriForFile(
+                getContext(),
+                AUTHORITY,
+                file);
+    }
+
+    private void grantWriteUriToAllResolvedActivities(Intent emailIntent, Uri emailUri) {
+        List<ResolveInfo> activities = getActivity().getPackageManager()
+                .queryIntentActivities(
+                        emailIntent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo activity: activities) {
+            getActivity().grantUriPermission(
+                    activity.activityInfo.packageName,
+                    emailUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
+    }
+
+    public void sendVcfFile(File file,Uri uri) {
+
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, mContact.getContactEmail());
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        grantWriteUriToAllResolvedActivities(emailIntent,uri);
+        getActivity().startActivity(Intent.createChooser(emailIntent,"Choose an Email client :"));
+
+    }*/
 
     private void shareContactIntent() {
 
