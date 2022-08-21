@@ -22,4 +22,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="share_contact_as">Share contact as</string>
+    <string name="file">File</string>
+    <string name="text">Text</string>
 </resources>

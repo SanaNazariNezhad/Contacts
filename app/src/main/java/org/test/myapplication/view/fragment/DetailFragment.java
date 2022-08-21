@@ -106,7 +106,9 @@ public class DetailFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.share_menu:
-                        shareContactIntent();
+                        BottomSheetDialog bottomSheet = BottomSheetDialog.newInstance(mContact.getPrimaryId());
+                        bottomSheet.show(getActivity().getSupportFragmentManager(),
+                                "BottomSheetShare");
                         break;
                     case R.id.edit_menu:
                         EditFragment editFragment = EditFragment.newInstance(mContact.getPrimaryId());
@@ -136,29 +138,4 @@ public class DetailFragment extends Fragment {
         });
     }
 
-    private void shareContactIntent() {
-
-        ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity());
-        Intent intent = intentBuilder
-                .setType("text/plain")
-                .setText(shareWord(mContact.getContactName(),mContact.getContactNumber(),
-                        mContact.getContactEmail()))
-                .setChooserTitle(getString(R.string.contact_sharing_massage))
-                .createChooserIntent();
-
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
-
-    public String shareWord(String name, String number, String email) {
-
-        String shareMassage = getString(
-                R.string.share_contact,
-                name,
-                number,
-                email);
-
-        return shareMassage;
-    }
 }
