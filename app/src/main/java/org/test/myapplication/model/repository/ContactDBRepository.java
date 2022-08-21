@@ -54,6 +54,11 @@ public class ContactDBRepository implements IRepository {
     }
 
     @Override
+    public List<ContactModel> searchContacts(String query) {
+        return mContactDAO.searchContacts(query);
+    }
+
+    @Override
     public ContactModel getContact(long inputID) {
         return mContactDAO.getContact(inputID);
     }

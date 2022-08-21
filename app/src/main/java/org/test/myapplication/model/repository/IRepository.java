@@ -9,6 +9,7 @@ public interface IRepository {
     void insertContact(ContactModel contact);
     void deleteContact(ContactModel contact);
     List<ContactModel> getContacts();
+    List<ContactModel> searchContacts(String query);
     ContactModel getContact(long inputID);
 
 }

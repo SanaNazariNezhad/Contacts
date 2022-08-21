@@ -94,4 +94,8 @@ public class ContactViewModel extends AndroidViewModel {
         // at last we are starting activity.
         mContext.startActivity(callIntent);
     }
+
+    public List<ContactModel> searchContact(String query){
+        return mRepository.searchContacts(query);
+    }
 }

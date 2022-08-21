@@ -17,10 +17,15 @@ import org.test.myapplication.databinding.ItemContactBinding;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     private final LifecycleOwner mOwner;
     private final ContactViewModel mContactViewModel;
-    public MainAdapter(LifecycleOwner owner, Context context, ContactViewModel contactViewModel) {
+    private List<ContactModel> mContactList;
+    public MainAdapter(LifecycleOwner owner, Context context, ContactViewModel contactViewModel, List<ContactModel> contactList) {
+        mContactList = contactList;
         mOwner = owner;
         mContactViewModel = contactViewModel;
         mContactViewModel.setContext(context);
@@ -44,13 +49,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     @Override
     public void onBindViewHolder(@NonNull MainAdapter.MainHolder holder, int position) {
 
-        ContactModel contact = mContactViewModel.getContactList().get(position);
+        ContactModel contact = mContactList.get(position);
         holder.bindContact(contact);
     }
 
     @Override
     public int getItemCount() {
-        return mContactViewModel.getContactList().size();
+        return mContactList.size();
     }
     class MainHolder extends RecyclerView.ViewHolder {
 

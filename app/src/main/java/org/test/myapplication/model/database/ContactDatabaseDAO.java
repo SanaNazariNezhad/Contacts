@@ -23,6 +23,9 @@ public interface ContactDatabaseDAO {
     @Query("SELECT * FROM contactTable")
     List<ContactModel> getContacts();
 
+    @Query("SELECT * FROM contactTable WHERE contactName LIKE '%' || :word || '%' OR contactNumber LIKE '%' || :word || '%' OR contactEmail LIKE '%' || :word || '%'")
+    List<ContactModel> searchContacts(String word);
+
     @Query("SELECT * FROM contactTable WHERE id =:inputID")
     ContactModel getContact(long inputID);
 

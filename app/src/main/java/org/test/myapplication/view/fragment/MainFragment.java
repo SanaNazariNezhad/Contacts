@@ -16,8 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.test.myapplication.model.ContactModel;
@@ -26,7 +30,8 @@ import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentMainBinding;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
@@ -55,35 +60,94 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
-        setAdapter();
+        setAdapter(mViewModel.getContactList());
         swipeRecycler();
         FAB_listener();
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_search, menu);
+
+        MenuItem searchMenuItem = menu.findItem(R.id.menu_item_search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        setSearchViewListeners(searchView);
+
+    }
+
+    private void setSearchViewListeners(SearchView searchView) {
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                /*mQuery = query;
+                mSearchViewModel.fetchSearchItemsAsync(query);
+                mSearchViewModel.setQueryInPreferences(query);*/
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                List<ContactModel> searchList = mViewModel.searchContact(newText);
+                if (searchList.isEmpty()) {
+                    Toast.makeText(getActivity(), "No Contact Found.", Toast.LENGTH_SHORT).show();
+                    setAdapter(searchList);
+                } else {
+                    // passing this filtered list to our adapter with filter list method.
+                    setAdapter(searchList);
+                }
+                return false;
+            }
+        });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    //TODO work on back button and onclick
+                    setAdapter(mViewModel.getContactList());
+                    searchView.setQuery("", false);
+                }
+            }
+        });
+
+        /*searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = mSearchViewModel.getQueryFromPreferences();
+                if (query != null)
+                    searchView.setQuery(query, false);
+            }
+        });*/
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        setAdapter();
+        setAdapter(mViewModel.getContactList());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        setAdapter();
+        setAdapter(mViewModel.getContactList());
     }
 
     private void initView() {
         mBinding.recyclerMainFragment.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    private void setAdapter() {
-        MainAdapter mainAdapter = new MainAdapter(this, getActivity(), mViewModel);
+    private void setAdapter(List<ContactModel> contactList) {
+        MainAdapter mainAdapter = new MainAdapter(this, getActivity(), mViewModel,contactList);
         mBinding.recyclerMainFragment.setAdapter(mainAdapter);
     }
 
@@ -105,7 +169,7 @@ public class MainFragment extends Fragment {
                     mViewModel.sendMessage(contact);
                     Toast.makeText(getActivity(), "Message: " + contact, Toast.LENGTH_SHORT).show();
                 }
-                setAdapter();
+                setAdapter(mViewModel.getContactList());
 
             }
 
