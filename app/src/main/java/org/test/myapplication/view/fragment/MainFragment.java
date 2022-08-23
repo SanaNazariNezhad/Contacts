@@ -32,6 +32,7 @@ public class MainFragment extends Fragment {
 
     private ContactViewModel mViewModel;
     private FragmentMainBinding mBinding;
+    private SearchView mSearchView;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -79,6 +80,7 @@ public class MainFragment extends Fragment {
 
     private void setSearchViewListeners(SearchView searchView) {
 
+        mSearchView = searchView;
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -118,14 +120,15 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mViewModel.getQueryFromPreferences().trim().isEmpty())
+        if (mViewModel.getQueryFromPreferences() == null)
             setAdapter(mViewModel.getContactList());
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //setAdapter(mViewModel.getContactList());
+        else {
+            if (mSearchView != null)
+                if (!mSearchView.isFocusable())
+                    setAdapter(mViewModel.getContactList());
+                else if (mViewModel.getQueryFromPreferences().trim().isEmpty())
+                        setAdapter(mViewModel.getContactList());
+        }
     }
 
     private void initView() {
