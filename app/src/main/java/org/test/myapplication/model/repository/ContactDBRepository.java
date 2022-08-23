@@ -10,9 +10,7 @@ import java.util.List;
 public class ContactDBRepository implements IRepository {
 
     private static ContactDBRepository sInstance;
-
-    private ContactDatabaseDAO mContactDAO;
-    private Context mContext;
+    private final ContactDatabaseDAO mContactDAO;
 
     public static ContactDBRepository getInstance(Context context) {
         if (sInstance == null)
@@ -22,8 +20,8 @@ public class ContactDBRepository implements IRepository {
     }
 
     private ContactDBRepository(Context context) {
-        mContext = context.getApplicationContext();
-        ContactDatabase crimeDatabase = Room.databaseBuilder(mContext,
+        Context context1 = context.getApplicationContext();
+        ContactDatabase crimeDatabase = Room.databaseBuilder(context1,
                         ContactDatabase.class,
                         "contact.db")
                 .allowMainThreadQueries()

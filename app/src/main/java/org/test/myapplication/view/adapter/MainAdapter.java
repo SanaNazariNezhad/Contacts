@@ -3,21 +3,16 @@ package org.test.myapplication.view.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.ItemContactBinding;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
@@ -42,8 +37,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
                 parent,
                 false);
 
-        MainHolder mainHolder = new MainHolder(itemContactBinding);
-        return mainHolder;
+        return new MainHolder(itemContactBinding);
     }
 
     @Override

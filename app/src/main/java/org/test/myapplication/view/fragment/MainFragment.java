@@ -3,18 +3,15 @@ package org.test.myapplication.view.fragment;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,16 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
-
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.view.adapter.MainAdapter;
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentMainBinding;
 import org.test.myapplication.viewmodel.ContactViewModel;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainFragment extends Fragment {
@@ -89,57 +82,50 @@ public class MainFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                /*mQuery = query;
-                mSearchViewModel.fetchSearchItemsAsync(query);
-                mSearchViewModel.setQueryInPreferences(query);*/
-                return false;
+                //searchView.clearFocus();
+                searchMethod(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<ContactModel> searchList = mViewModel.searchContact(newText);
-                if (searchList.isEmpty()) {
-                    Toast.makeText(getActivity(), "No Contact Found.", Toast.LENGTH_SHORT).show();
-                    setAdapter(searchList);
-                } else {
-                    // passing this filtered list to our adapter with filter list method.
-                    setAdapter(searchList);
-                }
-                return false;
+                searchMethod(newText);
+                return true;
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    //TODO work on back button and onclick
-                    setAdapter(mViewModel.getContactList());
-                    searchView.setQuery("", false);
-                }
-            }
+        searchView.setOnSearchClickListener(view -> {
+            String query = mViewModel.getQueryFromPreferences();
+            if (query != null)
+                searchView.setQuery(query, false);
         });
+        searchView.setOnCloseListener(() -> {
+            setAdapter(mViewModel.getContactList());
+            return true;
+        });
+                    //TODO work on back button
+    }
 
-        /*searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String query = mSearchViewModel.getQueryFromPreferences();
-                if (query != null)
-                    searchView.setQuery(query, false);
-            }
-        });*/
+    private void searchMethod(String query) {
+        List<ContactModel> searchList = mViewModel.searchContact(query);
+        mViewModel.setQueryInPreferences(query);
+        if (searchList.isEmpty()) {
+            Toast.makeText(getActivity(), "No Contact Found.", Toast.LENGTH_SHORT).show();
+        }
+        // passing this filtered list to our adapter.
+        setAdapter(searchList);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setAdapter(mViewModel.getContactList());
+        if (mViewModel.getQueryFromPreferences().trim().isEmpty())
+            setAdapter(mViewModel.getContactList());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        setAdapter(mViewModel.getContactList());
+        //setAdapter(mViewModel.getContactList());
     }
 
     private void initView() {
@@ -154,7 +140,7 @@ public class MainFragment extends Fragment {
     private void swipeRecycler() {
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -174,7 +160,7 @@ public class MainFragment extends Fragment {
             }
 
             @Override
-            public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+            public void onChildDraw (@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                      float dX, float dY, int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                         .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.blue1))

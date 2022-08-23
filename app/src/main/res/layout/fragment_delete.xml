@@ -9,7 +9,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.AppCompat.Title"
+        android:paddingTop="30dp"
+        style="@style/TextAppearance.AppCompat.Headline"
         android:text="@string/are_you_sure" />
 
 </LinearLayout>

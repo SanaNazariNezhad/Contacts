@@ -13,9 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Contacts">
         <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.activity.CreateNewContactActivity"
             android:exported="false" />
         <activity

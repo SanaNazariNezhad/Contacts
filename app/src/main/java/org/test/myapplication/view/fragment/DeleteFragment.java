@@ -3,7 +3,6 @@ package org.test.myapplication.view.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,7 +37,9 @@ public class DeleteFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mId = getArguments().getLong(KEY_VALUE_WORD_ID);
+        if (getArguments() != null) {
+            mId = getArguments().getLong(KEY_VALUE_WORD_ID);
+        }
     }
 
     @Override
@@ -55,22 +56,18 @@ public class DeleteFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_delete, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.delete_word);
-        builder.setIcon(R.drawable.ic_error);
+        builder.setTitle(R.string.delete_contact);
+        builder.setIcon(R.drawable.ic_warning);
         builder.setView(view);
-        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mViewModel.deleteContact(mContact);
-                sendResult();
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+            mViewModel.deleteContact(mContact);
+            sendResult();
 
-            }
         })
                 .setNegativeButton(R.string.no, null);
 
 
-        AlertDialog dialog = builder.create();
-        return dialog;
+        return builder.create();
     }
 
     private void sendResult() {
@@ -79,6 +76,8 @@ public class DeleteFragment extends DialogFragment {
         int resultCode = Activity.RESULT_OK;
         Intent intent = new Intent();
 
-        fragment.onActivityResult(requestCode, resultCode, intent);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, intent);
+        }
     }
 }

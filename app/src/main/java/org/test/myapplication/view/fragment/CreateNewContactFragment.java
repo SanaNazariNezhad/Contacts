@@ -2,16 +2,15 @@ package org.test.myapplication.view.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentCreateNewContactBinding;
 import org.test.myapplication.model.ContactModel;
@@ -46,7 +45,7 @@ public class CreateNewContactFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
@@ -59,29 +58,20 @@ public class CreateNewContactFragment extends Fragment {
     }
 
     private void listener() {
-        mBinding.btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mBinding.contactEmail.getText().toString().trim().length() == 0
-                && mBinding.contactName.getText().toString().trim().length() == 0
-                && mBinding.contactNumber.getText().toString().trim().length() == 0){
+        mBinding.btnSave.setOnClickListener(view -> {
+            if (mBinding.contactEmail.getText().toString().trim().length() == 0
+            && mBinding.contactName.getText().toString().trim().length() == 0
+            && mBinding.contactNumber.getText().toString().trim().length() == 0){
 
-                    Toast.makeText(getActivity(), "Nothing to save. Contact discarded.", Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
+                Toast.makeText(getActivity(), "Nothing to save. Contact discarded.", Toast.LENGTH_SHORT).show();
 
-                } else{
-                    ContactModel contact = new ContactModel(mBinding.contactName.getText().toString(),
-                            mBinding.contactNumber.getText().toString(),mBinding.contactEmail.getText().toString());
-                    mViewModel.insertContact(contact);
-                    getActivity().finish();
-                }
+            } else{
+                ContactModel contact = new ContactModel(mBinding.contactName.getText().toString(),
+                        mBinding.contactNumber.getText().toString(),mBinding.contactEmail.getText().toString());
+                mViewModel.insertContact(contact);
             }
+            requireActivity().finish();
         });
-        mBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-            }
-        });
+        mBinding.btnCancel.setOnClickListener(view -> requireActivity().finish());
     }
 }

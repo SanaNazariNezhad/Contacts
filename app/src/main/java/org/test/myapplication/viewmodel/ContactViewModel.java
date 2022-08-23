@@ -6,24 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.AndroidViewModel;
-
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.model.repository.ContactDBRepository;
+import org.test.myapplication.utils.QueryPreferences;
 import org.test.myapplication.view.activity.CreateNewContactActivity;
 import org.test.myapplication.view.activity.DetailActivity;
-import org.test.myapplication.view.fragment.CreateNewContactFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactViewModel extends AndroidViewModel {
     private Context mContext;
-    private ContactDBRepository mRepository;
+    private final ContactDBRepository mRepository;
 
     public ContactViewModel(@NonNull Application application) {
         super(application);
@@ -97,5 +92,13 @@ public class ContactViewModel extends AndroidViewModel {
 
     public List<ContactModel> searchContact(String query){
         return mRepository.searchContacts(query);
+    }
+
+    public void setQueryInPreferences(String query) {
+        QueryPreferences.setSearchQuery(getApplication(), query);
+    }
+
+    public String getQueryFromPreferences() {
+        return QueryPreferences.getSearchQuery(getApplication());
     }
 }

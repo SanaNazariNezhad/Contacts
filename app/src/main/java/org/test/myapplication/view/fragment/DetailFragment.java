@@ -3,23 +3,14 @@ package org.test.myapplication.view.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentDetailBinding;
 import org.test.myapplication.model.ContactModel;
@@ -59,7 +50,7 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mDetailBinding = DataBindingUtil.inflate(inflater,
@@ -86,7 +77,7 @@ public class DetailFragment extends Fragment {
         if (requestCode == REQUEST_CODE_EDIT) {
             initView();
         }else if (requestCode == REQUEST_CODE_DELETE){
-            getActivity().finish();
+            requireActivity().finish();
         }
     }
 
@@ -101,40 +92,30 @@ public class DetailFragment extends Fragment {
     }
 
     private void listener(){
-        mDetailBinding.bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.share_menu:
-                        BottomSheetDialog bottomSheet = BottomSheetDialog.newInstance(mContact.getPrimaryId());
-                        bottomSheet.show(getActivity().getSupportFragmentManager(),
-                                "BottomSheetShare");
-                        break;
-                    case R.id.edit_menu:
-                        EditFragment editFragment = EditFragment.newInstance(mContact.getPrimaryId());
-
-                        editFragment.setTargetFragment(
-                                DetailFragment.this,
-                                REQUEST_CODE_EDIT);
-
-                        editFragment.show(
-                                getActivity().getSupportFragmentManager(),
-                                FRAGMENT_TAG_EDIT);
-                        break;
-                    case R.id.delete_menu:
-                        DeleteFragment deleteFragment = DeleteFragment.newInstance(mContact.getPrimaryId());
-
-                        deleteFragment.setTargetFragment(
-                                DetailFragment.this,
-                                REQUEST_CODE_DELETE);
-
-                        deleteFragment.show(
-                                getActivity().getSupportFragmentManager(),
-                                FRAGMENT_TAG_DELETE);
-                        break;
-                }
-                return true;
+        mDetailBinding.bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.share_menu) {
+                BottomSheetDialog bottomSheet = BottomSheetDialog.newInstance(mContact.getPrimaryId());
+                bottomSheet.show(requireActivity().getSupportFragmentManager(),
+                        "BottomSheetShare");
+            } else if (itemId == R.id.edit_menu) {
+                EditFragment editFragment = EditFragment.newInstance(mContact.getPrimaryId());
+                editFragment.setTargetFragment(
+                        DetailFragment.this,
+                        REQUEST_CODE_EDIT);
+                editFragment.show(
+                        requireActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_EDIT);
+            } else if (itemId == R.id.delete_menu) {
+                DeleteFragment deleteFragment = DeleteFragment.newInstance(mContact.getPrimaryId());
+                deleteFragment.setTargetFragment(
+                        DetailFragment.this,
+                        REQUEST_CODE_DELETE);
+                deleteFragment.show(
+                        requireActivity().getSupportFragmentManager(),
+                        FRAGMENT_TAG_DELETE);
             }
+            return true;
         });
     }
 
