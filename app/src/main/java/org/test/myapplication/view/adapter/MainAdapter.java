@@ -76,18 +76,34 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
             // generate random color
             int color = generator.getRandomColor();
+            TextDrawable drawable = null;
+            if (!contact.getContactName().toString().trim().isEmpty()) {
 
+                drawable = getTextDrawable(contact.getContactName(), color);
+            }
+            else if (!contact.getContactNumber().toString().trim().isEmpty()){
+                drawable = getTextDrawable(contact.getContactNumber(), color);
+
+            }else if (!contact.getContactEmail().toString().trim().isEmpty()){
+                drawable = getTextDrawable(contact.getContactEmail(), color);
+
+            }
+            // setting image to our image view on below line.
+            mItemContactBinding.contactImage.setImageDrawable(drawable);
+        }
+
+        private TextDrawable getTextDrawable(String title, int color) {
+            TextDrawable drawable;
             // below text drawable is a circular.
-            TextDrawable drawable2 = TextDrawable.builder().beginConfig()
+            drawable = TextDrawable.builder().beginConfig()
                     .width(100)  // width in px
                     .height(100) // height in px
                     .endConfig()
                     // as we are building a circular drawable
                     // we are calling a build round method.
                     // in that method we are passing our text and color.
-                    .buildRound(contact.getContactName().substring(0, 1), color);
-            // setting image to our image view on below line.
-            mItemContactBinding.contactImage.setImageDrawable(drawable2);
+                    .buildRound(title.substring(0, 1), color);
+            return drawable;
         }
 
     }

@@ -107,9 +107,9 @@ public class EditFragment extends DialogFragment {
     }
 
     private boolean validateInput() {
-        return !mBinding.nameEdit.getText().toString().trim().isEmpty() &&
-                !mBinding.mobileEdit.getText().toString().trim().isEmpty() &&
-                !mBinding.emailEdit.getText().toString().trim().isEmpty();
+        return !(mBinding.nameEdit.getText().toString().trim().isEmpty() &&
+                mBinding.mobileEdit.getText().toString().trim().isEmpty() &&
+                mBinding.emailEdit.getText().toString().trim().isEmpty());
     }
 
     private void sendResult() {
