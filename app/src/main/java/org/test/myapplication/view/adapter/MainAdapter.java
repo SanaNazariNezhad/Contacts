@@ -23,7 +23,7 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     private final LifecycleOwner mOwner;
     private final ContactViewModel mContactViewModel;
-    private List<ContactModel> mContactList;
+    private final List<ContactModel> mContactList;
     public MainAdapter(LifecycleOwner owner, Context context, ContactViewModel contactViewModel, List<ContactModel> contactList) {
         mContactList = contactList;
         mOwner = owner;
@@ -71,20 +71,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
 
         public void bindContact(ContactModel contact) {
             mItemContactBinding.setContact(contact);
-            mItemContactBinding.contactName.setText(contact.getContactName());
             // on below line we are setting data to our text view.
             ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
             // generate random color
             int color = generator.getRandomColor();
             TextDrawable drawable = null;
-            if (!contact.getContactName().toString().trim().isEmpty()) {
-
+            if (!contact.getContactName().trim().isEmpty()) {
+                mItemContactBinding.contactName.setText(contact.getContactName());
                 drawable = getTextDrawable(contact.getContactName(), color);
             }
-            else if (!contact.getContactNumber().toString().trim().isEmpty()){
+            else if (!contact.getContactNumber().trim().isEmpty()){
+                mItemContactBinding.contactName.setText(contact.getContactNumber());
                 drawable = getTextDrawable(contact.getContactNumber(), color);
 
-            }else if (!contact.getContactEmail().toString().trim().isEmpty()){
+            }else if (!contact.getContactEmail().trim().isEmpty()){
+                mItemContactBinding.contactName.setText(contact.getContactEmail());
                 drawable = getTextDrawable(contact.getContactEmail(), color);
 
             }
