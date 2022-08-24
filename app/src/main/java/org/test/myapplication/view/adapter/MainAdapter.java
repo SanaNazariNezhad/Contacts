@@ -70,9 +70,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             // generate random color
             int color = generator.getRandomColor();
             TextDrawable drawable = null;
-            if (!contact.getContactName().trim().isEmpty()) {
-                mItemContactBinding.contactName.setText(contact.getContactName());
-                drawable = getTextDrawable(contact.getContactName(), color);
+            String name = mContactViewModel.getContactFullName(contact);
+            if (!name.isEmpty()) {
+                mItemContactBinding.contactName.setText(name);
+                drawable = getTextDrawable(name, color);
             }
             else if (!contact.getContactNumber().trim().isEmpty()){
                 mItemContactBinding.contactName.setText(contact.getContactNumber());

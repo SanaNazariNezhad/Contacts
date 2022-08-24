@@ -23,7 +23,7 @@ public interface ContactDatabaseDAO {
     @Query("SELECT * FROM contactTable")
     List<ContactModel> getContacts();
 
-    @Query("SELECT * FROM contactTable WHERE contactName LIKE '%' || :word || '%' OR contactNumber LIKE '%' || :word || '%' OR contactEmail LIKE '%' || :word || '%'")
+    @Query("SELECT * FROM contactTable WHERE prefix LIKE '%' || :word || '%' OR first LIKE '%' || :word || '%' OR middle LIKE '%' || :word || '%' OR last LIKE '%' || :word || '%' OR suffix LIKE '%' || :word || '%' OR contactNumber LIKE '%' || :word || '%' OR contactEmail LIKE '%' || :word || '%'")
     List<ContactModel> searchContacts(String word);
 
     @Query("SELECT * FROM contactTable WHERE id =:inputID")

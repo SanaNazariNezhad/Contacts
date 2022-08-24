@@ -1,6 +1,7 @@
 package org.test.myapplication.model;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,8 +12,8 @@ public class ContactModel {
     @ColumnInfo(name = "id")
     private long primaryId;
 
-    @ColumnInfo(name = "contactName")
-    private String mContactName;
+    @Embedded
+    private Name mContactName;
 
     @ColumnInfo(name = "contactNumber")
     private String mContactNumber;
@@ -20,7 +21,7 @@ public class ContactModel {
     @ColumnInfo(name = "contactEmail")
     private String mContactEmail;
 
-    public ContactModel(String contactName, String contactNumber, String contactEmail) {
+    public ContactModel(Name contactName, String contactNumber, String contactEmail) {
         mContactName = contactName;
         mContactNumber = contactNumber;
         mContactEmail = contactEmail;
@@ -34,11 +35,11 @@ public class ContactModel {
         this.primaryId = primaryId;
     }
 
-    public String getContactName() {
+    public Name getContactName() {
         return mContactName;
     }
 
-    public void setContactName(String contactName) {
+    public void setContactName(Name contactName) {
         mContactName = contactName;
     }
 

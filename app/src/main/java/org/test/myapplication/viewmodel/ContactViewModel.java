@@ -38,6 +38,23 @@ public class ContactViewModel extends AndroidViewModel {
         return mRepository.getContact(id);
     }
 
+    public String getContactFullName(ContactModel contact){
+        String name = "";
+        if (contact.getContactName().getPrefix().trim().length() != 0)
+            name = contact.getContactName().getPrefix() + " ";
+        if (contact.getContactName().getFirst().trim().length() != 0)
+            name += contact.getContactName().getFirst() + " ";
+        if (contact.getContactName().getMiddle().trim().length() != 0)
+            name += contact.getContactName().getMiddle() + " ";
+        if (contact.getContactName().getLast().trim().length() != 0)
+            name += contact.getContactName().getLast();
+        if (contact.getContactName().getSuffix().trim().length() != 0)
+            name += ", " +   contact.getContactName().getSuffix();
+
+        return name;
+
+    }
+
     public void insertContact(ContactModel contact) {
         mRepository.insertContact(contact);
     }

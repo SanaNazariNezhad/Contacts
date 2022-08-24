@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
-import org.test.myapplication.view.fragment.CreateNewContactFragment;
+
+import org.test.myapplication.view.fragment.NewContactFragment;
 
 public class CreateNewContactActivity extends SingleFragmentActivity {
 
@@ -15,7 +16,7 @@ public class CreateNewContactActivity extends SingleFragmentActivity {
 
     @Override
     public Fragment createFragment() {
-        return CreateNewContactFragment.newInstance();
+        return NewContactFragment.newInstance();
     }
 
 }

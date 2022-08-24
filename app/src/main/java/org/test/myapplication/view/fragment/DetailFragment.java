@@ -85,7 +85,7 @@ public class DetailFragment extends Fragment {
         mContact = mViewModel.getContact((mId));
         mViewModel.setContext(getActivity());
         mDetailBinding.setContactViewModel(mViewModel);
-        mDetailBinding.idTVName.setText(mContact.getContactName());
+        mDetailBinding.idTVName.setText(mViewModel.getContactFullName(mContact));
         mDetailBinding.idTVPhoneNumber.setText(mContact.getContactNumber());
         mDetailBinding.idTVEmailAddress.setText(mContact.getContactEmail());
         mDetailBinding.setContact(mContact);

@@ -22,6 +22,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     public static final String CONTACT_ID = "ContactId";
     private long mId;
     private ContactModel mContact;
+    private ContactViewModel mViewModel;
     private BottomSheetShareBinding mShareBinding;
 
     public static BottomSheetDialog newInstance(long contactId) {
@@ -54,8 +55,8 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ContactViewModel viewModel = new ViewModelProvider(this).get(ContactViewModel.class);
-        mContact = viewModel.getContact(mId);
+        mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        mContact = mViewModel.getContact(mId);
         listeners();
     }
 
@@ -79,7 +80,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         ShareCompat.IntentBuilder intentBuilder = new ShareCompat.IntentBuilder(requireActivity());
         Intent intent = intentBuilder
                 .setType("text/plain")
-                .setText(shareWord(mContact.getContactName(),mContact.getContactNumber(),
+                .setText(shareWord(mViewModel.getContactFullName(mContact), mContact.getContactNumber(),
                         mContact.getContactEmail()))
                 .setChooserTitle(getString(R.string.contact_sharing_massage))
                 .createChooserIntent();
