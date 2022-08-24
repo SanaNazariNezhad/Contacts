@@ -26,4 +26,13 @@
     <string name="file">File</string>
     <string name="text">Text</string>
     <string name="search">Search</string>
+    <string name="icon_for_person">icon for person</string>
+    <string name="name_prefix">Name prefix</string>
+    <string name="first_name">First name</string>
+    <string name="middle_name">Middle name</string>
+    <string name="last_name">Last name</string>
+    <string name="name_suffix">Name suffix</string>
+    <string name="icon_for_name_subsections">icon for name subsections</string>
+    <string name="icon_for_call_number">icon for call number</string>
+    <string name="icon_for_email">icon for email</string>
 </resources>
