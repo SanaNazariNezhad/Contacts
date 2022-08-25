@@ -29,4 +29,19 @@ public interface ContactDatabaseDAO {
     @Query("SELECT * FROM contactTable WHERE id =:inputID")
     ContactModel getContact(long inputID);
 
+    @Query("UPDATE contactTable SET selectedContact = 1")
+    void setContactsSelected();
+
+    @Query("UPDATE contactTable SET selectedContact = 0")
+    void setContactsUnSelected();
+
+    @Query("DELETE FROM contactTable WHERE selectedContact = 1")
+    void deleteSelectedContact();
+
+    @Query("UPDATE contactTable SET selectedContact = 1 WHERE id =:contact_id")
+    void setContactSelected(long contact_id);
+
+    @Query("UPDATE contactTable SET selectedContact = 0 WHERE id =:contact_id")
+    void setContactUnSelected(long contact_id);
+
 }

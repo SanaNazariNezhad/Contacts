@@ -6,9 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.model.repository.ContactDBRepository;
 import org.test.myapplication.utils.QueryPreferences;
@@ -19,11 +23,13 @@ import java.util.List;
 public class ContactViewModel extends AndroidViewModel {
     private Context mContext;
     private final ContactDBRepository mRepository;
+    private MutableLiveData<Boolean> mSelectedItemsLiveData = new MutableLiveData<>();
 
     public ContactViewModel(@NonNull Application application) {
         super(application);
 
         mRepository = ContactDBRepository.getInstance(application);
+        mSelectedItemsLiveData.setValue(false);
     }
 
     public void setContext(Context context) {
@@ -69,6 +75,20 @@ public class ContactViewModel extends AndroidViewModel {
 
     public void onClickContactListItems(ContactModel contact) {
         mContext.startActivity(DetailActivity.newIntent(mContext,contact));
+    }
+
+    public void onLongClickContactListItems(ContactModel contact) {
+        if (contact.getCheck_Select() == 1) {
+            setContactUnSelected(contact.getPrimaryId());
+            mSelectedItemsLiveData.setValue(false);
+        } else{
+            setContactSelected(contact.getPrimaryId());
+            mSelectedItemsLiveData.setValue(true);
+        }
+    }
+
+    public MutableLiveData<Boolean> getSelectedItemsLiveData() {
+        return mSelectedItemsLiveData;
     }
 
     public void onClickCreateNewContact() {
@@ -117,5 +137,25 @@ public class ContactViewModel extends AndroidViewModel {
 
     public String getQueryFromPreferences() {
         return QueryPreferences.getSearchQuery(getApplication());
+    }
+
+    public void setContactsSelected(){
+        mRepository.setContactsSelected();
+    }
+
+    public void setContactsUnSelected() {
+        mRepository.setContactsUnSelected();
+    }
+
+    public void setContactSelected(long contact_id){
+        mRepository.setContactSelected(contact_id);
+    }
+
+    public void setContactUnSelected(long contact_id) {
+        mRepository.setContactUnSelected(contact_id);
+    }
+
+    public void deleteSelectedContact() {
+        mRepository.deleteSelectedContact();
     }
 }

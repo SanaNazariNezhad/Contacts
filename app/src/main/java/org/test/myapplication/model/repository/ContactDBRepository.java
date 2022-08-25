@@ -1,6 +1,8 @@
 package org.test.myapplication.model.repository;
 
 import android.content.Context;
+
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.model.database.ContactDatabase;
@@ -60,4 +62,30 @@ public class ContactDBRepository implements IRepository {
     public ContactModel getContact(long inputID) {
         return mContactDAO.getContact(inputID);
     }
+
+    @Override
+    public void setContactsSelected() {
+        mContactDAO.setContactsSelected();
+    }
+
+    @Override
+    public void setContactsUnSelected() {
+        mContactDAO.setContactsUnSelected();
+    }
+
+    @Override
+    public void deleteSelectedContact() {
+        mContactDAO.deleteSelectedContact();
+    }
+
+    @Override
+    public void setContactSelected(long contact_id) {
+        mContactDAO.setContactSelected(contact_id);
+    }
+
+    @Override
+    public void setContactUnSelected(long contact_id) {
+        mContactDAO.setContactUnSelected(contact_id);
+    }
+
 }

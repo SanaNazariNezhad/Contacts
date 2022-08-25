@@ -2,6 +2,7 @@ package org.test.myapplication.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -64,6 +65,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
         }
 
         public void bindContact(ContactModel contact) {
+            mItemContactBinding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mContactViewModel.onLongClickContactListItems(contact);
+                    return true;
+                }
+            });
             mItemContactBinding.setContact(contact);
             // on below line we are setting data to our text view.
             ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
@@ -71,6 +79,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             int color = generator.getRandomColor();
             TextDrawable drawable = null;
             String name = mContactViewModel.getContactFullName(contact);
+            mItemContactBinding.checkbox.setChecked(contact.getCheck_Select() == 1);
+            if (contact.getCheck_Select() == 0)
+                mItemContactBinding.checkbox.setVisibility(View.GONE);
             if (!name.isEmpty()) {
                 mItemContactBinding.contactName.setText(name);
                 drawable = getTextDrawable(name, color);

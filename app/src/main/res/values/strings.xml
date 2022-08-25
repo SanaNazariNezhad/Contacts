@@ -35,4 +35,6 @@
     <string name="icon_for_name_subsections">icon for name subsections</string>
     <string name="icon_for_call_number">icon for call number</string>
     <string name="icon_for_email">icon for email</string>
+    <string name="select_all">Select all</string>
+    <string name="unselect_all">Unselect all</string>
 </resources>

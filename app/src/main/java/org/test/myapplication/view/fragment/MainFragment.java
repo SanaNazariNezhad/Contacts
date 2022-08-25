@@ -2,6 +2,8 @@ package org.test.myapplication.view.fragment;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,6 +35,7 @@ public class MainFragment extends Fragment {
     private ContactViewModel mViewModel;
     private FragmentMainBinding mBinding;
     private SearchView mSearchView;
+    private LiveData<Boolean> mSelectedItemsLiveData;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -61,9 +64,11 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        mSelectedItemsLiveData = mViewModel.getSelectedItemsLiveData();
         setAdapter(mViewModel.getContactList());
         swipeRecycler();
         FAB_listener();
+        setObserver();
     }
 
     @Override
@@ -76,6 +81,30 @@ public class MainFragment extends Fragment {
         SearchView searchView = (SearchView) searchMenuItem.getActionView();
         setSearchViewListeners(searchView);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.menu_delete:
+                mViewModel.deleteSelectedContact();
+                setAdapter(mViewModel.getContactList());
+                return true;
+
+            case R.id.menu_select_all:
+                mViewModel.setContactsSelected();
+                setAdapter(mViewModel.getContactList());
+                return true;
+
+            case R.id.menu_unSelectAll:
+                mViewModel.setContactsUnSelected();
+                setAdapter(mViewModel.getContactList());
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setSearchViewListeners(SearchView searchView) {
@@ -188,6 +217,15 @@ public class MainFragment extends Fragment {
     private void FAB_listener() {
         mViewModel.setContext(getActivity());
         mBinding.setContactViewModel(mViewModel);
+    }
+
+    private void setObserver() {
+        mSelectedItemsLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                setAdapter(mViewModel.getContactList());
+            }
+        });
     }
 
 }

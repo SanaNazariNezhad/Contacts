@@ -11,5 +11,10 @@ public interface IRepository {
     List<ContactModel> getContacts();
     List<ContactModel> searchContacts(String query);
     ContactModel getContact(long inputID);
+    void setContactsSelected();
+    void setContactsUnSelected();
+    void deleteSelectedContact();
+    void setContactSelected(long contact_id);
+    void setContactUnSelected(long contact_id);
 
 }
