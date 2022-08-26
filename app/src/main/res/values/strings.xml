@@ -37,4 +37,7 @@
     <string name="icon_for_email">icon for email</string>
     <string name="select_all">Select all</string>
     <string name="unselect_all">Unselect all</string>
+    <string name="contact_image_in_recycler_view">contact image in recycler view.</string>
+    <string name="insert_contact">insert contact</string>
+    <string name="contact_icon">contact icon</string>
 </resources>
