@@ -1,5 +1,6 @@
 package org.test.myapplication.view.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,8 @@ import org.test.myapplication.databinding.FragmentNewContactBinding;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.model.Name;
 import org.test.myapplication.viewmodel.ContactViewModel;
+
+import java.util.Objects;
 
 public class NewContactFragment extends Fragment {
 
@@ -56,11 +60,20 @@ public class NewContactFragment extends Fragment {
                 container,
                 false);
 
+        int nightModeFlags =  mBinding.getRoot().getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags != Configuration.UI_MODE_NIGHT_YES) {
+            mBinding.ivName.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+            mBinding.ivPhone.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+            mBinding.ivEmail.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+            mBinding.imageViewInsertName.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+
         return mBinding.getRoot();
     }
 
     private void listener() {
         mBinding.imageViewInsertName.setOnClickListener(view -> extractedName());
+        mBinding.btnCancel.setOnClickListener(view -> requireActivity().finish());
         mBinding.btnSave.setOnClickListener(view -> {
             Name name = new Name();
             if (mBinding.editTextEmail.getText().toString().trim().length() == 0
@@ -80,14 +93,14 @@ public class NewContactFragment extends Fragment {
                     && mBinding.editTextLastName.getText().toString().trim().length() == 0
                     && mBinding.editTextNameSuffix.getText().toString().trim().length() == 0) {
 
-                name.setFirst(mBinding.addName.getText().toString());
-                name.setPrefix("");
-                name.setMiddle("");
-                name.setLast("");
-                name.setSuffix("");
-                ContactModel contact = new ContactModel(name, mBinding.editTextPhone.getText().toString(),
+                    name.setFirst(mBinding.addName.getText().toString());
+                    name.setPrefix("");
+                    name.setMiddle("");
+                    name.setLast("");
+                    name.setSuffix("");
+                    ContactModel contact = new ContactModel(name, mBinding.editTextPhone.getText().toString(),
                         mBinding.editTextEmail.getText().toString());
-                mViewModel.insertContact(contact);
+                    mViewModel.insertContact(contact);
             } else {
                 if (mBinding.editTextNamePrefix.getText().toString().trim().length() == 0)
                     name.setPrefix("");
@@ -117,7 +130,6 @@ public class NewContactFragment extends Fragment {
             }
             requireActivity().finish();
         });
-        mBinding.btnCancel.setOnClickListener(view -> requireActivity().finish());
     }
 
     private void extractedName() {

@@ -2,9 +2,11 @@ package org.test.myapplication.view.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -58,6 +60,14 @@ public class DetailFragment extends Fragment {
                 container,
                 false);
 
+        int nightModeFlags =  mDetailBinding.getRoot().getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags != Configuration.UI_MODE_NIGHT_YES) {
+            mDetailBinding.idIVContact.setBackgroundColor(mDetailBinding.getRoot().getResources().getColor(R.color.blue_500));
+            mDetailBinding.idTVName.setBackgroundColor(mDetailBinding.getRoot().getResources().getColor(R.color.blue_500));
+            mDetailBinding.idIVCall.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+            mDetailBinding.idIVMessage.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+            mDetailBinding.idIVEmail.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.blue_500), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         return mDetailBinding.getRoot();
     }
 
@@ -85,9 +95,6 @@ public class DetailFragment extends Fragment {
         mContact = mViewModel.getContact((mId));
         mViewModel.setContext(getActivity());
         mDetailBinding.setContactViewModel(mViewModel);
-        mDetailBinding.idTVName.setText(mViewModel.getContactFullName(mContact));
-        mDetailBinding.idTVPhoneNumber.setText(mContact.getContactNumber());
-        mDetailBinding.idTVEmailAddress.setText(mContact.getContactEmail());
         mDetailBinding.setContact(mContact);
     }
 

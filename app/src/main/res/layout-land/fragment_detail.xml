@@ -27,12 +27,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_left_vertical_center"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+
                 <ImageView
                     android:id="@+id/idIVContact"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="50dp"
                     android:background="@color/gray"
-                    android:paddingTop="50dp"
+                    android:paddingTop="12dp"
                     android:src="@drawable/ic_person"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -45,7 +53,7 @@
                 <TextView
                     android:id="@+id/idTVName"
                     android:layout_width="match_parent"
-                    android:layout_height="75dp"
+                    android:layout_height="45dp"
                     android:layout_below="@id/idIVContact"
                     android:background="@color/gray"
                     android:gravity="center|top"
@@ -63,13 +71,14 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_mobile"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/idTVName"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="2dp"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/gl_left_vertical_center"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/idTVName">
 
@@ -154,15 +163,16 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_email"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/idTVName"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="12dp"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cardView_mobile">
+                    app:layout_constraintStart_toEndOf="@id/gl_left_vertical_center"
+                    app:layout_constraintTop_toBottomOf="@id/idTVName">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"

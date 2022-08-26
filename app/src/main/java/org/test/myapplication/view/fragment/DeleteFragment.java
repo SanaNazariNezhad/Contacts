@@ -1,7 +1,6 @@
 package org.test.myapplication.view.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.test.myapplication.R;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
@@ -55,7 +55,7 @@ public class DeleteFragment extends DialogFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.fragment_delete, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_rounded);
         builder.setTitle(R.string.delete_contact);
         builder.setIcon(R.drawable.ic_warning);
         builder.setView(view);

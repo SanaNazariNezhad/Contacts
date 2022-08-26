@@ -3,7 +3,6 @@ package org.test.myapplication.view.fragment;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -85,26 +84,21 @@ public class MainFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.menu_delete:
-                mViewModel.deleteSelectedContact();
-                setAdapter(mViewModel.getContactList());
-                return true;
-
-            case R.id.menu_select_all:
-                mViewModel.setContactsSelected();
-                setAdapter(mViewModel.getContactList());
-                return true;
-
-            case R.id.menu_unSelectAll:
-                mViewModel.setContactsUnSelected();
-                setAdapter(mViewModel.getContactList());
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_delete) {
+            mViewModel.deleteSelectedContact();
+            setAdapter(mViewModel.getContactList());
+            return true;
+        } else if (itemId == R.id.menu_select_all) {
+            mViewModel.setContactsSelected();
+            setAdapter(mViewModel.getContactList());
+            return true;
+        } else if (itemId == R.id.menu_unSelectAll) {
+            mViewModel.setContactsUnSelected();
+            setAdapter(mViewModel.getContactList());
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setSearchViewListeners(SearchView searchView) {
@@ -195,7 +189,7 @@ public class MainFragment extends Fragment {
             public void onChildDraw (@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                      float dX, float dY, int actionState, boolean isCurrentlyActive){
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.blue1))
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.blue))
                         .addSwipeLeftActionIcon(R.drawable.ic_sms)
                         .addSwipeRightBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.light_green))
                         .addSwipeRightActionIcon(R.drawable.ic_call)
@@ -220,12 +214,7 @@ public class MainFragment extends Fragment {
     }
 
     private void setObserver() {
-        mSelectedItemsLiveData.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                setAdapter(mViewModel.getContactList());
-            }
-        });
+        mSelectedItemsLiveData.observe(getViewLifecycleOwner(), aBoolean -> setAdapter(mViewModel.getContactList()));
     }
 
 }

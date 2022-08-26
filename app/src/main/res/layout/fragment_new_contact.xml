@@ -57,6 +57,9 @@
             app:layout_constraintStart_toEndOf="@id/gl_left_vertical_text"
             app:layout_constraintTop_toTopOf="@id/iv_name"
             app:layout_constraintBottom_toBottomOf="@id/iv_name"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/name" />
@@ -144,6 +147,9 @@
             android:id="@+id/tv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:text="@string/phone"
             app:layout_constraintBottom_toBottomOf="@id/iv_phone"
             app:layout_constraintStart_toEndOf="@id/gl_left_vertical_text"
@@ -175,6 +181,9 @@
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:text="@string/email"
             app:layout_constraintBottom_toBottomOf="@id/iv_email"
             app:layout_constraintStart_toEndOf="@id/gl_left_vertical_text"
@@ -204,20 +213,22 @@
 
         <Button
             android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toTopOf="@id/gl_left_horizontal_bottom"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_save"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
             android:text="@string/cancel" />
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toTopOf="@id/gl_left_horizontal_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
             android:text="@string/save" />
 
 
