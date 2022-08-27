@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="telephone_number_types_array">
+        <item>Mobile</item>
+        <item>Home</item>
+        <item>Work</item>
+        <item>Main</item>
+        <item>Work fax</item>
+        <item>Home fax</item>
+        <item>Pager</item>
+        <item>Other</item>
+    </string-array>
+</resources>

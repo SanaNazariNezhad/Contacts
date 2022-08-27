@@ -9,9 +9,9 @@ import org.test.myapplication.view.fragment.NewContactFragment;
 
 public class CreateNewContactActivity extends SingleFragmentActivity {
 
-    public static Intent newIntent (Context context){
+    public static Intent newIntent(Context context) {
 
-        return new Intent(context,CreateNewContactActivity.class);
+        return new Intent(context, CreateNewContactActivity.class);
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.test.myapplication.R;
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     public abstract Fragment createFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

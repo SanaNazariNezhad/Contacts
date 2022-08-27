@@ -21,14 +21,26 @@ public class ContactModel {
     @ColumnInfo(name = "contactEmail")
     private String mContactEmail;
 
+    @ColumnInfo(name = "telephoneType")
+    private String mTelephoneType;
+
     @ColumnInfo(name = "selectedContact")
     private int mCheck_Select;
 
-    public ContactModel(Name contactName, String contactNumber, String contactEmail) {
+    public ContactModel(Name contactName, String contactNumber, String contactEmail, String telephoneType) {
         mContactName = contactName;
         mContactNumber = contactNumber;
         mContactEmail = contactEmail;
+        mTelephoneType = telephoneType;
         mCheck_Select = 0;
+    }
+
+    public String getTelephoneType() {
+        return mTelephoneType;
+    }
+
+    public void setTelephoneType(String telephoneType) {
+        mTelephoneType = telephoneType;
     }
 
     public long getPrimaryId() {

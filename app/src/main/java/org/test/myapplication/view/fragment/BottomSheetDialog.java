@@ -84,7 +84,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                 .setChooserTitle(getString(R.string.contact_sharing_massage))
                 .createChooserIntent();
 
-        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+        if (requireActivity().getPackageManager().resolveActivity(intent,0) != null){
             startActivity(intent);
         }
     }

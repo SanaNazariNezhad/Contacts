@@ -15,30 +15,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/share_contact_as"
-            android:typeface="serif"
-            android:textSize="22sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textStyle="bold" />
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
         <TextView
             android:id="@+id/tv_file_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:typeface="serif"
-            android:textSize="20sp"
+            android:text="@string/file"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:text="@string/file"/>
+            android:textSize="20sp"
+            android:typeface="serif" />
 
         <TextView
             android:id="@+id/tv_text_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:typeface="serif"
-            android:textSize="20sp"
+            android:text="@string/text"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:text="@string/text"/>
+            android:textSize="20sp"
+            android:typeface="serif" />
 
     </LinearLayout>
 </layout>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="contactViewModel"
             type="org.test.myapplication.viewmodel.ContactViewModel" />
@@ -32,11 +33,11 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
+            android:contentDescription="@string/insert_contact"
             android:onClick="@{() -> contactViewModel.onClickCreateNewContact()}"
             android:src="@drawable/ic_person_add"
             app:fabCustomSize="60dp"
-            app:tint="@color/white"
-            android:contentDescription="@string/insert_contact" />
+            app:tint="@color/white" />
 
     </RelativeLayout>
 </layout>

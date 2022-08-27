@@ -60,12 +60,4 @@ public class Name {
 
     public Name() {
     }
-
-    public Name(String prefix, String first, String middle, String last, String suffix) {
-        mPrefix = prefix;
-        mFirst = first;
-        mMiddle = middle;
-        mLast = last;
-        mSuffix = suffix;
-    }
 }

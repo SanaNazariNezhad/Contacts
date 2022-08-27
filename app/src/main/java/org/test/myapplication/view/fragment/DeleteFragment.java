@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.test.myapplication.R;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
@@ -29,7 +32,7 @@ public class DeleteFragment extends DialogFragment {
     public static DeleteFragment newInstance(long wordId) {
         DeleteFragment fragment = new DeleteFragment();
         Bundle args = new Bundle();
-        args.putLong(KEY_VALUE_WORD_ID,wordId);
+        args.putLong(KEY_VALUE_WORD_ID, wordId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,10 +63,10 @@ public class DeleteFragment extends DialogFragment {
         builder.setIcon(R.drawable.ic_warning);
         builder.setView(view);
         builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-            mViewModel.deleteContact(mContact);
-            sendResult();
+                    mViewModel.deleteContact(mContact);
+                    sendResult();
 
-        })
+                })
                 .setNegativeButton(R.string.no, null);
 
 

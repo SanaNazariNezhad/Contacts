@@ -4,15 +4,18 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +24,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
+
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.view.adapter.MainAdapter;
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentMainBinding;
 import org.test.myapplication.viewmodel.ContactViewModel;
+
 import java.util.List;
+
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainFragment extends Fragment {
@@ -127,7 +133,7 @@ public class MainFragment extends Fragment {
             setAdapter(mViewModel.getContactList());
             return true;
         });
-                    //TODO work on back button
+        //TODO work on back button
     }
 
     private void searchMethod(String query) {
@@ -150,7 +156,7 @@ public class MainFragment extends Fragment {
                 if (!mSearchView.isFocusable())
                     setAdapter(mViewModel.getContactList());
                 else if (mViewModel.getQueryFromPreferences().trim().isEmpty())
-                        setAdapter(mViewModel.getContactList());
+                    setAdapter(mViewModel.getContactList());
         }
     }
 
@@ -159,7 +165,7 @@ public class MainFragment extends Fragment {
     }
 
     private void setAdapter(List<ContactModel> contactList) {
-        MainAdapter mainAdapter = new MainAdapter(this, getActivity(), mViewModel,contactList);
+        MainAdapter mainAdapter = new MainAdapter(this, getActivity(), mViewModel, contactList);
         mBinding.recyclerMainFragment.setAdapter(mainAdapter);
     }
 
@@ -174,10 +180,10 @@ public class MainFragment extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
                 ContactModel contact = mViewModel.getContactList().get(position);
-                if (direction == ItemTouchHelper.RIGHT){
+                if (direction == ItemTouchHelper.RIGHT) {
                     mViewModel.makeCall(contact);
                     Toast.makeText(getActivity(), "Call: " + contact, Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     mViewModel.sendMessage(contact);
                     Toast.makeText(getActivity(), "Message: " + contact, Toast.LENGTH_SHORT).show();
                 }
@@ -186,8 +192,8 @@ public class MainFragment extends Fragment {
             }
 
             @Override
-            public void onChildDraw (@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
-                                     float dX, float dY, int actionState, boolean isCurrentlyActive){
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                         .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.blue))
                         .addSwipeLeftActionIcon(R.drawable.ic_sms)

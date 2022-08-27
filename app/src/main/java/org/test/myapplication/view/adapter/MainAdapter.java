@@ -5,22 +5,27 @@ import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.ItemContactBinding;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
+
 import java.util.List;
 
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
     private final LifecycleOwner mOwner;
     private final ContactViewModel mContactViewModel;
     private final List<ContactModel> mContactList;
+
     public MainAdapter(LifecycleOwner owner, Context context, ContactViewModel contactViewModel, List<ContactModel> contactList) {
         mContactList = contactList;
         mOwner = owner;
@@ -53,6 +58,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
     public int getItemCount() {
         return mContactList.size();
     }
+
     class MainHolder extends RecyclerView.ViewHolder {
 
         ItemContactBinding mItemContactBinding;
@@ -62,7 +68,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             mItemContactBinding = itemContactBinding;
             mItemContactBinding.setLifecycleOwner(mOwner);
             mItemContactBinding.setContactViewModel(mContactViewModel);
-            int nightModeFlags =  mItemContactBinding.getRoot().getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            int nightModeFlags = mItemContactBinding.getRoot().getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
                 mItemContactBinding.contactNameRecycler.setTextColor(mItemContactBinding.getRoot().getResources().getColor(R.color.white));
 
@@ -85,12 +91,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder>{
             if (!name.isEmpty()) {
                 mItemContactBinding.contactNameRecycler.setText(name);
                 drawable = getTextDrawable(name, color);
-            }
-            else if (!contact.getContactNumber().trim().isEmpty()){
+            } else if (!contact.getContactNumber().trim().isEmpty()) {
                 mItemContactBinding.contactNameRecycler.setText(contact.getContactNumber());
                 drawable = getTextDrawable(contact.getContactNumber(), color);
 
-            }else if (!contact.getContactEmail().trim().isEmpty()){
+            } else if (!contact.getContactEmail().trim().isEmpty()) {
                 mItemContactBinding.contactNameRecycler.setText(contact.getContactEmail());
                 drawable = getTextDrawable(contact.getContactEmail(), color);
 

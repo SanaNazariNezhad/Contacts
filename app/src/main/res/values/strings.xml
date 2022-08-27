@@ -40,4 +40,5 @@
     <string name="contact_image_in_recycler_view">contact image in recycler view.</string>
     <string name="insert_contact">insert contact</string>
     <string name="contact_icon">contact icon</string>
+    <string name="telephone_type">telephone type</string>
 </resources>

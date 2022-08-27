@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:typeface="serif"
+        android:text="@string/are_you_sure"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:text="@string/are_you_sure" />
+        android:typeface="serif" />
 
 </LinearLayout>

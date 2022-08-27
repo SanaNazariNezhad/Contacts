@@ -4,15 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentDetailBinding;
 import org.test.myapplication.model.ContactModel;
@@ -60,7 +63,7 @@ public class DetailFragment extends Fragment {
                 container,
                 false);
 
-        int nightModeFlags =  mDetailBinding.getRoot().getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        int nightModeFlags = mDetailBinding.getRoot().getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if (nightModeFlags != Configuration.UI_MODE_NIGHT_YES) {
             mDetailBinding.idIVContact.setBackgroundColor(mDetailBinding.getRoot().getResources().getColor(R.color.blue_500));
             mDetailBinding.idTVName.setBackgroundColor(mDetailBinding.getRoot().getResources().getColor(R.color.blue_500));
@@ -86,7 +89,7 @@ public class DetailFragment extends Fragment {
 
         if (requestCode == REQUEST_CODE_EDIT) {
             initView();
-        }else if (requestCode == REQUEST_CODE_DELETE){
+        } else if (requestCode == REQUEST_CODE_DELETE) {
             requireActivity().finish();
         }
     }
@@ -98,7 +101,7 @@ public class DetailFragment extends Fragment {
         mDetailBinding.setContact(mContact);
     }
 
-    private void listener(){
+    private void listener() {
         mDetailBinding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.share_menu) {

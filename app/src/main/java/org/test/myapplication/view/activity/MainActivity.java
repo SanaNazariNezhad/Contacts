@@ -7,13 +7,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
 import org.test.myapplication.view.fragment.MainFragment;
+
 import java.util.List;
 
 public class MainActivity extends SingleFragmentActivity {
