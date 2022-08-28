@@ -1,33 +1,32 @@
 package org.test.myapplication.view.fragment;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import org.test.myapplication.R;
 import org.test.myapplication.databinding.FragmentDetailBinding;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
-
+import java.util.ArrayList;
 import stream.customalert.CustomAlertDialogue;
 
 public class DetailFragment extends Fragment {
 
     public static final String BUNDLE_ARG_IS_ITEM_DELETED = "isItemsDeleted";
+    public static final String BUNDLE_ARG_IS_ITEM_SHARED = "isItemsShared";
     private static final String ARG_Contact = "contact_detail";
     public static final String FRAGMENT_TAG_EDIT = "Edit";
     public static final int REQUEST_CODE_EDIT = 0;
@@ -35,7 +34,8 @@ public class DetailFragment extends Fragment {
     private FragmentDetailBinding mDetailBinding;
     private ContactViewModel mViewModel;
     private Long mId;
-    private boolean mItemsSelected = false;
+    private boolean mItemDeleted = false;
+    private boolean mItemShared = false;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -52,7 +52,8 @@ public class DetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(BUNDLE_ARG_IS_ITEM_DELETED, mItemsSelected);
+        outState.putBoolean(BUNDLE_ARG_IS_ITEM_DELETED, mItemDeleted);
+        outState.putBoolean(BUNDLE_ARG_IS_ITEM_SHARED, mItemShared);
     }
 
     @Override
@@ -61,11 +62,16 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             mId = getArguments().getLong(ARG_Contact);
         }
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             if (savedInstanceState.getBoolean(BUNDLE_ARG_IS_ITEM_DELETED)) {
                 deleteContact();
-                mItemsSelected = true;
+                mItemDeleted = true;
             }
+            if (savedInstanceState.getBoolean(BUNDLE_ARG_IS_ITEM_SHARED)){
+                shareDialog();
+                mItemShared = true;
+            }
+        }
     }
 
     @Override
@@ -118,9 +124,8 @@ public class DetailFragment extends Fragment {
         mDetailBinding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.share_menu) {
-                BottomSheetDialog bottomSheet = BottomSheetDialog.newInstance(mContact.getPrimaryId());
-                bottomSheet.show(requireActivity().getSupportFragmentManager(),
-                        "BottomSheetShare");
+                shareDialog();
+                mItemShared = true;
             } else if (itemId == R.id.edit_menu) {
                 EditFragment editFragment = EditFragment.newInstance(mContact.getPrimaryId());
                 editFragment.setTargetFragment(
@@ -131,10 +136,68 @@ public class DetailFragment extends Fragment {
                         FRAGMENT_TAG_EDIT);
             } else if (itemId == R.id.delete_menu) {
                 deleteContact();
-                mItemsSelected = true;
+                mItemDeleted = true;
             }
             return true;
         });
+    }
+
+    private void shareDialog() {
+        ArrayList<String> other = new ArrayList<>();
+        other.add(getString(R.string.text));
+        other.add(getString(R.string.file));
+
+        CustomAlertDialogue.Builder alert = new CustomAlertDialogue.Builder(requireActivity())
+                .setStyle(CustomAlertDialogue.Style.ACTIONSHEET)
+                .setTitle(getString(R.string.share_contact_as))
+                .setTitleColor(R.color.text_default)
+                .setCancelText(getString(R.string.cancel))
+                .setOnCancelClicked((view, dialog) -> {
+                    dialog.dismiss();
+                    mItemShared = false;
+                })
+                .setOthers(other)
+                .setOnItemClickListener((adapterView, view, i, l) -> {
+                    String selection = adapterView.getItemAtPosition(i).toString();
+                    switch (selection)
+                    {
+                        case "Text":
+                            CustomAlertDialogue.getInstance().dismiss();
+                            shareContactIntent();
+                            break;
+                        case "File":
+                            CustomAlertDialogue.getInstance().dismiss();
+                            Toast.makeText(requireActivity(), getString(R.string.file), Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                })
+                .setDecorView(requireActivity().getWindow().getDecorView())
+                .build();
+        alert.show();
+    }
+
+    private void shareContactIntent() {
+
+        ShareCompat.IntentBuilder intentBuilder = new ShareCompat.IntentBuilder(requireActivity());
+        Intent intent = intentBuilder
+                .setType("text/plain")
+                .setText(shareWord(mViewModel.getContactFullName(mContact), mContact.getContactNumber(),
+                        mContact.getContactEmail()))
+                .setChooserTitle(getString(R.string.contact_sharing_massage))
+                .createChooserIntent();
+
+        if (requireActivity().getPackageManager().resolveActivity(intent,0) != null){
+            startActivity(intent);
+        }
+    }
+
+    public String shareWord(String name, String number, String email) {
+
+        return getString(
+                R.string.share_contact,
+                name,
+                number,
+                email);
     }
 
     private void deleteContact() {
@@ -146,24 +209,18 @@ public class DetailFragment extends Fragment {
                 .setPositiveText(getString(R.string.yes))
                 .setPositiveColor(R.color.negative)
                 .setPositiveTypeface(Typeface.DEFAULT_BOLD)
-                .setOnPositiveClicked(new CustomAlertDialogue.OnPositiveClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        mViewModel.deleteContact(mContact);
-                        dialog.dismiss();
-                        requireActivity().finish();
-                    }
+                .setOnPositiveClicked((view, dialog) -> {
+                    mViewModel.deleteContact(mContact);
+                    dialog.dismiss();
+                    requireActivity().finish();
                 })
                 .setNegativeText(getString(R.string.no))
                 .setNegativeColor(R.color.positive)
-                .setOnNegativeClicked(new CustomAlertDialogue.OnNegativeClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        mItemsSelected = false;
-                        dialog.dismiss();
-                    }
+                .setOnNegativeClicked((view, dialog) -> {
+                    mItemDeleted = false;
+                    dialog.dismiss();
                 })
-                .setDecorView(getActivity().getWindow().getDecorView())
+                .setDecorView(requireActivity().getWindow().getDecorView())
                 .build();
         alert.show();
     }
