@@ -14,11 +14,10 @@
     <string name="share">Share</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="share_contact"> [Name] %1$s \n[Mobile] %2$s \n[Email] %3$s
-    </string>
+    <string name="share_contact"> [Name] %1$s \n[Mobile] %2$s \n[Email] %3$s</string>
+    <string name="delete_contact"> Delete %1$s:</string>
     <string name="contact_sharing_massage">Contact sharing Message</string>
     <string name="edit_contact">Edit Contact:</string>
-    <string name="delete_contact">Delete Contact:</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="are_you_sure">Are you sure?</string>

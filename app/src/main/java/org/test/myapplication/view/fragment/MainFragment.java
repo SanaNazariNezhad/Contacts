@@ -35,6 +35,7 @@ import org.test.myapplication.databinding.FragmentMainBinding;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import stream.customalert.CustomAlertDialogue;
@@ -71,11 +72,11 @@ public class MainFragment extends Fragment {
         if (savedInstanceState != null) {
             if (savedInstanceState.getInt(BUNDLE_ARG_IS_ITEM_SELECTED) != 0) {
                 if (savedInstanceState.getBoolean(BUNDLE_IS_CLICK_DELETE))
-                    deleteContact();
+                    deleteContact(savedInstanceState.getInt(BUNDLE_ARG_IS_ITEM_SELECTED));
             }
         }
 
-                setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class MainFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         outState.putInt(BUNDLE_ARG_IS_ITEM_SELECTED, mViewModel.getNumberOfSelectedContacts());
-        outState.putBoolean(BUNDLE_IS_CLICK_DELETE,mClick);
+        outState.putBoolean(BUNDLE_IS_CLICK_DELETE, mClick);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class MainFragment extends Fragment {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_delete) {
             if (mViewModel.getNumberOfSelectedContacts() != 0)
-                deleteContact();
+                deleteContact(mViewModel.getNumberOfSelectedContacts());
             return true;
         } else if (itemId == R.id.menu_select_all) {
             mViewModel.setContactsSelected();
@@ -128,37 +129,47 @@ public class MainFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteContact() {
+    private void deleteContact(int deletedItem) {
         mClick = true;
         CustomAlertDialogue.Builder alert = new CustomAlertDialogue.Builder(getActivity())
                 .setStyle(CustomAlertDialogue.Style.DIALOGUE)
                 .setCancelable(false)
-                .setTitle(getString(R.string.delete_contact))
+                .setTitle(getTitle(deletedItem))
                 .setMessage(getString(R.string.are_you_sure))
                 .setPositiveText(getString(R.string.yes))
                 .setPositiveColor(R.color.negative)
                 .setPositiveTypeface(Typeface.DEFAULT_BOLD)
-                .setOnPositiveClicked(new CustomAlertDialogue.OnPositiveClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        mViewModel.deleteSelectedContact();
-                        setAdapter(mViewModel.getContactList());
-                        dialog.dismiss();
-                    }
+                .setOnPositiveClicked((view, dialog) -> {
+                    mViewModel.deleteSelectedContact();
+                    setAdapter(mViewModel.getContactList());
+                    dialog.dismiss();
                 })
                 .setNegativeText(getString(R.string.no))
                 .setNegativeColor(R.color.positive)
-                .setOnNegativeClicked(new CustomAlertDialogue.OnNegativeClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        mViewModel.setContactsUnSelected();
-                        setAdapter(mViewModel.getContactList());
-                        dialog.dismiss();
-                    }
+                .setOnNegativeClicked((view, dialog) -> {
+                    mViewModel.setContactsUnSelected();
+                    setAdapter(mViewModel.getContactList());
+                    dialog.dismiss();
                 })
-                .setDecorView(getActivity().getWindow().getDecorView())
+                .setDecorView(requireActivity().getWindow().getDecorView())
                 .build();
         alert.show();
+    }
+
+    private String getTitle(int deletedItem) {
+        String title;
+
+        if (deletedItem == 1)
+            title = getString(
+                    R.string.delete_contact,
+                    deletedItem + " contact");
+        else {
+            title = getString(
+                    R.string.delete_contact,
+                    deletedItem + " contacts");
+        }
+
+        return title;
     }
 
     private void setSearchViewListeners(SearchView searchView) {
