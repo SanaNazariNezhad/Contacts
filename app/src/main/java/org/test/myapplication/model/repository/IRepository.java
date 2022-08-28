@@ -28,4 +28,6 @@ public interface IRepository {
 
     void setContactUnSelected(long contact_id);
 
+    int getNumberOfSelectedContacts();
+
 }

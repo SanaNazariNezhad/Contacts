@@ -1,8 +1,10 @@
 package org.test.myapplication.view.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,18 +23,19 @@ import org.test.myapplication.databinding.FragmentDetailBinding;
 import org.test.myapplication.model.ContactModel;
 import org.test.myapplication.viewmodel.ContactViewModel;
 
+import stream.customalert.CustomAlertDialogue;
+
 public class DetailFragment extends Fragment {
 
+    public static final String BUNDLE_ARG_IS_ITEM_DELETED = "isItemsDeleted";
     private static final String ARG_Contact = "contact_detail";
     public static final String FRAGMENT_TAG_EDIT = "Edit";
     public static final int REQUEST_CODE_EDIT = 0;
-    public static final String FRAGMENT_TAG_DELETE = "Delete";
-    public static final int REQUEST_CODE_DELETE = 1;
-
     private ContactModel mContact;
     private FragmentDetailBinding mDetailBinding;
     private ContactViewModel mViewModel;
     private Long mId;
+    private boolean mItemsSelected = false;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -47,11 +50,22 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(BUNDLE_ARG_IS_ITEM_DELETED, mItemsSelected);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mId = getArguments().getLong(ARG_Contact);
         }
+        if (savedInstanceState != null)
+            if (savedInstanceState.getBoolean(BUNDLE_ARG_IS_ITEM_DELETED)) {
+                deleteContact();
+                mItemsSelected = true;
+            }
     }
 
     @Override
@@ -78,6 +92,7 @@ public class DetailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        mViewModel.setContactsUnSelected();
         initView();
         listener();
     }
@@ -89,8 +104,6 @@ public class DetailFragment extends Fragment {
 
         if (requestCode == REQUEST_CODE_EDIT) {
             initView();
-        } else if (requestCode == REQUEST_CODE_DELETE) {
-            requireActivity().finish();
         }
     }
 
@@ -117,16 +130,42 @@ public class DetailFragment extends Fragment {
                         requireActivity().getSupportFragmentManager(),
                         FRAGMENT_TAG_EDIT);
             } else if (itemId == R.id.delete_menu) {
-                DeleteFragment deleteFragment = DeleteFragment.newInstance(mContact.getPrimaryId());
-                deleteFragment.setTargetFragment(
-                        DetailFragment.this,
-                        REQUEST_CODE_DELETE);
-                deleteFragment.show(
-                        requireActivity().getSupportFragmentManager(),
-                        FRAGMENT_TAG_DELETE);
+                deleteContact();
+                mItemsSelected = true;
             }
             return true;
         });
+    }
+
+    private void deleteContact() {
+        CustomAlertDialogue.Builder alert = new CustomAlertDialogue.Builder(getActivity())
+                .setStyle(CustomAlertDialogue.Style.DIALOGUE)
+                .setCancelable(false)
+                .setTitle(getString(R.string.delete_contact))
+                .setMessage(getString(R.string.are_you_sure))
+                .setPositiveText(getString(R.string.yes))
+                .setPositiveColor(R.color.negative)
+                .setPositiveTypeface(Typeface.DEFAULT_BOLD)
+                .setOnPositiveClicked(new CustomAlertDialogue.OnPositiveClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        mViewModel.deleteContact(mContact);
+                        dialog.dismiss();
+                        requireActivity().finish();
+                    }
+                })
+                .setNegativeText(getString(R.string.no))
+                .setNegativeColor(R.color.positive)
+                .setOnNegativeClicked(new CustomAlertDialogue.OnNegativeClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        mItemsSelected = false;
+                        dialog.dismiss();
+                    }
+                })
+                .setDecorView(getActivity().getWindow().getDecorView())
+                .build();
+        alert.show();
     }
 
 }

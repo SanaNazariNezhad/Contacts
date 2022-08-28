@@ -46,4 +46,7 @@ public interface ContactDatabaseDAO {
     @Query("UPDATE contactTable SET selectedContact = 0 WHERE id =:contact_id")
     void setContactUnSelected(long contact_id);
 
+    @Query("SELECT COUNT(selectedContact) FROM contactTable WHERE selectedContact = 1")
+    int getNumberOfSelectedContacts();
+
 }

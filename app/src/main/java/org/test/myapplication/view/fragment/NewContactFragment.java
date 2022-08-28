@@ -57,6 +57,7 @@ public class NewContactFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        mViewModel.setContactsUnSelected();
         listener();
     }
 

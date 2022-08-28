@@ -5,8 +5,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Dialog;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,13 +37,17 @@ import org.test.myapplication.viewmodel.ContactViewModel;
 import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+import stream.customalert.CustomAlertDialogue;
 
 public class MainFragment extends Fragment {
 
+    public static final String BUNDLE_ARG_IS_ITEM_SELECTED = "isItemsSelected";
+    public static final String BUNDLE_IS_CLICK_DELETE = "isClickDelete";
     private ContactViewModel mViewModel;
     private FragmentMainBinding mBinding;
     private SearchView mSearchView;
     private LiveData<Boolean> mSelectedItemsLiveData;
+    private boolean mClick = false;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -61,8 +68,22 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getInt(BUNDLE_ARG_IS_ITEM_SELECTED) != 0) {
+                if (savedInstanceState.getBoolean(BUNDLE_IS_CLICK_DELETE))
+                    deleteContact();
+            }
+        }
 
-        setHasOptionsMenu(true);
+                setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(BUNDLE_ARG_IS_ITEM_SELECTED, mViewModel.getNumberOfSelectedContacts());
+        outState.putBoolean(BUNDLE_IS_CLICK_DELETE,mClick);
     }
 
     @Override
@@ -92,8 +113,8 @@ public class MainFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_delete) {
-            mViewModel.deleteSelectedContact();
-            setAdapter(mViewModel.getContactList());
+            if (mViewModel.getNumberOfSelectedContacts() != 0)
+                deleteContact();
             return true;
         } else if (itemId == R.id.menu_select_all) {
             mViewModel.setContactsSelected();
@@ -105,6 +126,39 @@ public class MainFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteContact() {
+        mClick = true;
+        CustomAlertDialogue.Builder alert = new CustomAlertDialogue.Builder(getActivity())
+                .setStyle(CustomAlertDialogue.Style.DIALOGUE)
+                .setCancelable(false)
+                .setTitle(getString(R.string.delete_contact))
+                .setMessage(getString(R.string.are_you_sure))
+                .setPositiveText(getString(R.string.yes))
+                .setPositiveColor(R.color.negative)
+                .setPositiveTypeface(Typeface.DEFAULT_BOLD)
+                .setOnPositiveClicked(new CustomAlertDialogue.OnPositiveClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        mViewModel.deleteSelectedContact();
+                        setAdapter(mViewModel.getContactList());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeText(getString(R.string.no))
+                .setNegativeColor(R.color.positive)
+                .setOnNegativeClicked(new CustomAlertDialogue.OnNegativeClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        mViewModel.setContactsUnSelected();
+                        setAdapter(mViewModel.getContactList());
+                        dialog.dismiss();
+                    }
+                })
+                .setDecorView(getActivity().getWindow().getDecorView())
+                .build();
+        alert.show();
     }
 
     private void setSearchViewListeners(SearchView searchView) {
@@ -125,6 +179,8 @@ public class MainFragment extends Fragment {
             }
         });
         searchView.setOnSearchClickListener(view -> {
+            mViewModel.setContactsUnSelected();
+            setAdapter(mViewModel.getContactList());
             String query = mViewModel.getQueryFromPreferences();
             if (query != null)
                 searchView.setQuery(query, false);

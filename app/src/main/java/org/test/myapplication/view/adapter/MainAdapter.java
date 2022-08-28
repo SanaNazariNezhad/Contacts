@@ -75,6 +75,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainHolder> {
         }
 
         public void bindContact(ContactModel contact) {
+            mItemContactBinding.checkbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContactViewModel.onLongClickContactListItems(contact);
+                }
+            });
             mItemContactBinding.getRoot().setOnLongClickListener(view -> {
                 mContactViewModel.onLongClickContactListItems(contact);
                 return true;

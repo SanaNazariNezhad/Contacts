@@ -18,6 +18,7 @@ import org.test.myapplication.model.repository.ContactDBRepository;
 import org.test.myapplication.utils.QueryPreferences;
 import org.test.myapplication.view.activity.CreateNewContactActivity;
 import org.test.myapplication.view.activity.DetailActivity;
+
 import java.util.List;
 
 public class ContactViewModel extends AndroidViewModel {
@@ -44,7 +45,7 @@ public class ContactViewModel extends AndroidViewModel {
         return mRepository.getContact(id);
     }
 
-    public String getContactFullName(ContactModel contact){
+    public String getContactFullName(ContactModel contact) {
         String name = "";
         if (contact.getContactName().getPrefix().trim().length() != 0)
             name = contact.getContactName().getPrefix() + " ";
@@ -55,7 +56,7 @@ public class ContactViewModel extends AndroidViewModel {
         if (contact.getContactName().getLast().trim().length() != 0)
             name += contact.getContactName().getLast();
         if (contact.getContactName().getSuffix().trim().length() != 0)
-            name += ", " +   contact.getContactName().getSuffix();
+            name += ", " + contact.getContactName().getSuffix();
 
         return name;
 
@@ -74,14 +75,14 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     public void onClickContactListItems(ContactModel contact) {
-        mContext.startActivity(DetailActivity.newIntent(mContext,contact));
+        mContext.startActivity(DetailActivity.newIntent(mContext, contact));
     }
 
     public void onLongClickContactListItems(ContactModel contact) {
         if (contact.getCheck_Select() == 1) {
             setContactUnSelected(contact.getPrimaryId());
             mSelectedItemsLiveData.setValue(false);
-        } else{
+        } else {
             setContactSelected(contact.getPrimaryId());
             mSelectedItemsLiveData.setValue(true);
         }
@@ -109,7 +110,7 @@ public class ContactViewModel extends AndroidViewModel {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
         emailIntent.setData(Uri.parse("mailto:" + contact.getContactEmail()));
         emailIntent.putExtra(Intent.EXTRA_EMAIL, contact.getContactEmail());
-        mContext.startActivity(Intent.createChooser(emailIntent,"Choose an Email client :"));
+        mContext.startActivity(Intent.createChooser(emailIntent, "Choose an Email client :"));
     }
 
     public void makeCall(ContactModel contact) {
@@ -127,7 +128,7 @@ public class ContactViewModel extends AndroidViewModel {
         mContext.startActivity(callIntent);
     }
 
-    public List<ContactModel> searchContact(String query){
+    public List<ContactModel> searchContact(String query) {
         return mRepository.searchContacts(query);
     }
 
@@ -139,7 +140,7 @@ public class ContactViewModel extends AndroidViewModel {
         return QueryPreferences.getSearchQuery(getApplication());
     }
 
-    public void setContactsSelected(){
+    public void setContactsSelected() {
         mRepository.setContactsSelected();
     }
 
@@ -147,7 +148,7 @@ public class ContactViewModel extends AndroidViewModel {
         mRepository.setContactsUnSelected();
     }
 
-    public void setContactSelected(long contact_id){
+    public void setContactSelected(long contact_id) {
         mRepository.setContactSelected(contact_id);
     }
 
@@ -157,5 +158,9 @@ public class ContactViewModel extends AndroidViewModel {
 
     public void deleteSelectedContact() {
         mRepository.deleteSelectedContact();
+    }
+
+    public int getNumberOfSelectedContacts() {
+        return mRepository.getNumberOfSelectedContacts();
     }
 }

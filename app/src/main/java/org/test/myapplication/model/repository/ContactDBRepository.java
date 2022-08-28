@@ -89,4 +89,9 @@ public class ContactDBRepository implements IRepository {
         mContactDAO.setContactUnSelected(contact_id);
     }
 
+    @Override
+    public int getNumberOfSelectedContacts() {
+        return mContactDAO.getNumberOfSelectedContacts();
+    }
+
 }
