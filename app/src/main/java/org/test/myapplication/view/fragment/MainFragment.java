@@ -249,10 +249,8 @@ public class MainFragment extends Fragment {
                 ContactModel contact = mViewModel.getContactList().get(position);
                 if (direction == ItemTouchHelper.RIGHT) {
                     mViewModel.makeCall(contact);
-                    Toast.makeText(getActivity(), "Call: " + contact, Toast.LENGTH_SHORT).show();
                 } else {
                     mViewModel.sendMessage(contact);
-                    Toast.makeText(getActivity(), "Message: " + contact, Toast.LENGTH_SHORT).show();
                 }
                 setAdapter(mViewModel.getContactList());
 

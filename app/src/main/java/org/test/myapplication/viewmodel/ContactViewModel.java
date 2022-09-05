@@ -100,7 +100,6 @@ public class ContactViewModel extends AndroidViewModel {
         // in this method we are calling an intent to send sms.
         // on below line we are passing our contact number.
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + contact.getContactNumber()));
-        intent.putExtra("sms_body", "Enter your message");
         mContext.startActivity(intent);
     }
 
