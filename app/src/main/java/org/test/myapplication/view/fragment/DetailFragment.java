@@ -204,7 +204,7 @@ public class DetailFragment extends Fragment {
         CustomAlertDialogue.Builder alert = new CustomAlertDialogue.Builder(getActivity())
                 .setStyle(CustomAlertDialogue.Style.DIALOGUE)
                 .setCancelable(false)
-                .setTitle(getString(R.string.delete_contact))
+                .setTitle(getString(R.string.delete_this_contact))
                 .setMessage(getString(R.string.are_you_sure))
                 .setPositiveText(getString(R.string.yes))
                 .setPositiveColor(R.color.negative)
