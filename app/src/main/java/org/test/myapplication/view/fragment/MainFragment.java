@@ -198,9 +198,9 @@ public class MainFragment extends Fragment {
         });
         searchView.setOnCloseListener(() -> {
             setAdapter(mViewModel.getContactList());
+            searchView.onActionViewCollapsed();
             return true;
         });
-        //TODO work on back button
     }
 
     private void searchMethod(String query) {
